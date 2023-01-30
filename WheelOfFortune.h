@@ -17,8 +17,8 @@ using namespace std;
 class WheelOfFortune {
 private:
     vector<int> wheel;
-    string phrase;
-    string category;
+    vector<string> categories, phrases;
+    string phrase, category;
 
 public:
     WheelOfFortune() {
@@ -26,27 +26,21 @@ public:
         //srand(time(NULL));
     }
     // Options
-    void printOptions(ostream outs) {
-        outs << "<><><> Options <><><>" << endl;
-        outs << "V - Buy a vowel" << endl << "C - Consonant" << endl << "P - Solve the puzzle!" << endl;
+    void printOptions(ostream& outs) {
+        outs << "<><><> Let's Play Wheel of Fortune! <><><>" << endl;
+        outs << "C - Guess a consonant" << endl << "V - Buy a vowel" << endl << "P - Solve the puzzle!" << endl << "E - Exit" << endl;
     }
-/*
-    bool guessLetter(char letter){
 
-    }*/
-     void readFile(string filename) {
+    void readFile(string filename) {
         ifstream inFile;
         inFile.open(filename);
 
-        vector<string> categories, phrases;
         char comma, quote;
 
-        if (inFile) {
-            cout << "Yes";
+        if (!inFile) {
+            cout << "File not Found" << endl;
         }
-        else {
-            cout << "No";
-        }
+
         while (inFile && inFile.peek() != EOF) {
             if (inFile.peek() == '"') {
                 inFile >> quote;
@@ -65,11 +59,24 @@ public:
             else {
                 getline(inFile, phrase, '\n');
             }
-
             categories.push_back(category);
             phrases.push_back(phrase);
         }
         inFile.close();
+    }
+
+    void setRandom() {
+         int index = rand() % phrases.size();
+         phrase = phrases[index];
+         category = categories[index];
+    }
+
+    string getPhrase() {
+         return this->phrase;
+     }
+
+    string getCategory() {
+         return this->category;
     }
     /** Spin wheel
     bool spinWheel(ostream outs) {
