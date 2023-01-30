@@ -7,6 +7,10 @@
  * Will expand to add wheel and prizes
  */
  int main() {
+     WheelOfFortune wheel;
+     wheel.readFile("../WOFPhrases.csv");
+
+
      return 0;
  }
 /// Wheel of Fortune: Phrases ///
