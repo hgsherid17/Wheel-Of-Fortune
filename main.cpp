@@ -15,6 +15,11 @@ using namespace std;
      wheel.printOptions(cout);
      wheel.readFile("../WOFPhrases.csv");
      wheel.setRandom();
+     
+     cout << wheel.getPhrase() << endl;
+
+     wheel.printPhrase(cout);
+
 
 
 

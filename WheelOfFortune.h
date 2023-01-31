@@ -19,11 +19,12 @@ private:
     vector<int> wheel;
     vector<string> categories, phrases;
     string phrase, category;
+    vector<char> lettersGuessed;
 
 public:
     WheelOfFortune() {
         wheel = {500, 550, 600, 650, 700, 800, 900, 2500, 500, 550, 600, 650, 700, 0};
-        //srand(time(NULL));
+        srand(time(NULL));
     }
     // Options
     void printOptions(ostream& outs) {
@@ -78,6 +79,64 @@ public:
     string getCategory() {
          return this->category;
     }
+
+    int guessConsonant(char letter) {
+        int guessed = 0;
+        lettersGuessed.push_back(letter);
+        for (int i = 0; i < lettersGuessed.size(); ++i) {
+            if (lettersGuessed[i] == letter) {
+                cout << "You have already guessed that letter!" << endl;
+                return -1;
+            }
+        }
+        for (char ch : phrase) {
+            if (ch == letter) {
+                guessed++;
+            }
+        }
+        return guessed;
+
+    }
+
+    int guessVowel(char letter) {
+        int guessed = 0;
+        lettersGuessed.push_back(letter);
+        for (char ch : lettersGuessed) {
+            if (ch == letter) {
+                return -1;
+            }
+        }
+        for (char ch : phrase) {
+            if (ch == letter) {
+                guessed++;
+            }
+        }
+        return guessed;
+
+
+    }
+
+    void printPhrase(ostream& outs) {
+        int flag = 0;
+        for (int i = 0; i < phrase.size(); ++i) {
+            for (int j = 0; j < lettersGuessed.size(); ++j) {
+                 if (toupper(phrase[i]) == toupper(lettersGuessed[j])) {
+                     flag++;
+                 }
+            }
+            if (flag > 0) {
+                outs << phrase[i];
+            }
+            else if (isspace(phrase[i])) {
+                outs << " ";
+            }
+            else {
+                outs << "_";
+            }
+            flag = 0;
+        }
+        outs << endl;
+    }
     /** Spin wheel
     bool spinWheel(ostream outs) {
         Prizes prizeIndex = rand() % wheel.size();
@@ -93,7 +152,6 @@ public:
     }**/
     // Options
 
-    // Get phrase
 
     // Buy vowel
 
