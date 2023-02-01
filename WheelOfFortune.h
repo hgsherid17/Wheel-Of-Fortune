@@ -28,18 +28,36 @@ public:
     }
     // Options
     void printOptions(ostream& outs) {
-        outs << "<><><> Let's Play Wheel of Fortune! <><><>" << endl;
+        outs << "<><>Options<><>" << endl;
         outs << "C - Guess a consonant" << endl << "V - Buy a vowel" << endl << "P - Solve the puzzle!" << endl << "E - Exit" << endl;
     }
 
-    void readFile(string filename) {
+    char getOption(ostream& outs, istream& ins) {
+        string option;
+        char choice;
+
+        printOptions(outs);
+
+        getline(cin, option);
+        while (option != "c" && option != "v" && option != "p" && option != "e" && option.length() != 1) {
+            outs << "Invalid input. Please choose an option: ";
+            getline(cin, option);
+        }
+
+        choice = option[0];
+
+        return choice;
+
+    }
+
+    bool readFile(string filename) {
         ifstream inFile;
         inFile.open(filename);
 
         char comma, quote;
 
         if (!inFile) {
-            cout << "File not Found" << endl;
+            return false;
         }
 
         while (inFile && inFile.peek() != EOF) {
@@ -64,6 +82,7 @@ public:
             phrases.push_back(phrase);
         }
         inFile.close();
+        return true;
     }
 
     void setRandom() {
@@ -125,7 +144,7 @@ public:
                  }
             }
             if (flag > 0) {
-                outs << phrase[i];
+                outs << (char) toupper(phrase[i]);
             }
             else if (isspace(phrase[i])) {
                 outs << " ";
@@ -137,27 +156,10 @@ public:
         }
         outs << endl;
     }
-    /** Spin wheel
-    bool spinWheel(ostream outs) {
-        Prizes prizeIndex = rand() % wheel.size();
-        Prizes prize = wheel[prizeIndex];
-
-        if (prize == "Bankrupt") {
-            outs << "You've gone Bankrupt!" << endl;
-            balance = 0;
-        }
-        else {
-            outs << ""
-        }
-    }**/
-    // Options
-
-
-    // Buy vowel
-
-    // Bank
-        // User balance
-
+    bool spinWheel(ostream& outs) {
+        int prizeIndex = rand() % wheel.size();
+        int prize = wheel[prizeIndex];
+    }
 };
 
 

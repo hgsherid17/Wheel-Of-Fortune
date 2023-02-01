@@ -10,15 +10,56 @@ using namespace std;
  * Will expand to add wheel and prizes
  */
  int main() {
-     WheelOfFortune wheel;
+     // Make object
+     WheelOfFortune player;
 
-     wheel.printOptions(cout);
-     wheel.readFile("../WOFPhrases.csv");
-     wheel.setRandom();
-     
-     cout << wheel.getPhrase() << endl;
+     // Initialize balance
+     int balance = 0;
+     string phrase;
+     string category;
+     string input;
 
-     wheel.printPhrase(cout);
+     // Start game?
+     cout << "<><><><><><><><><><><><><><>" << endl;
+     cout << "Welcome to Wheel of Fortune!" << endl;
+     cout << "<><><><><><><><><><><><><><>" << endl;
+
+     cout << "Press any key to start: ";
+     getline(cin, input);
+     if (input != "") {
+         player.readFile("../WOFPhrases.csv");
+         player.setRandom();
+         category = player.getCategory();
+
+         cout << "Your balance: " << balance << endl;
+         cout << "Category: " << category << endl;
+         player.printPhrase(cout);
+         char choice = player.getOption(cout, cin);
+
+         while (choice != 'e') {
+             switch (choice) {
+                 case 'c' :
+                     
+
+             }
+         }
+
+
+     }
+        // Yes
+            // Read in from file
+            // Print sentence and category
+            // Print balance
+            // Print options
+                // C - Consonant / spin wheel
+                // V - Buy vowel
+                // E - exit game
+                    // Jumps to no
+        // No
+            // return 0
+
+
+
 
 
 
