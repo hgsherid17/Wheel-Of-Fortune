@@ -12,6 +12,9 @@
 #include <ostream>
 #include <iostream>
 #include <fstream>
+#include <algorithm>
+#include <ctype.h>
+
 using namespace std;
 
 class WheelOfFortune {
@@ -20,6 +23,9 @@ private:
     vector<string> categories, phrases;
     string phrase, category;
     vector<char> lettersGuessed;
+
+    vector<char> vowels = {'A', 'E', 'I', 'O', 'U'};
+
 
 public:
     WheelOfFortune() {
@@ -103,41 +109,76 @@ public:
         int guessed = 0;
         string letter;
 
-        cout << "Enter a consonant: " << endl;
-        getline(cin, letter);
+        outs << "Enter a consonant: ";
+        getline(ins, letter);
+
+        /**
+         * TODO: validate if digit in string
+         */
+        while (letter.length() != 1 || letter == "" || find(vowels.begin(), vowels.end(), toupper(letter[0])) != vowels.end()) {
+            if (letter == "") {
+                outs << "No input. Enter a single consonant: ";
+                ins.clear();
+                getline(ins, letter);
+            }
+            else {
+                outs << "Invalid input. Enter a single consonant: ";
+                ins.clear();
+                getline(ins, letter);
+            }
+        }
 
 
-        lettersGuessed.push_back(letter);
         for (int i = 0; i < lettersGuessed.size(); ++i) {
-            if (lettersGuessed[i] == letter) {
+            if (lettersGuessed[i] == letter[0]) {
                 cout << "You have already guessed that letter!" << endl;
                 return -1;
             }
         }
         for (char ch : phrase) {
-            if (ch == letter) {
+            if (ch == letter[0]) {
                 guessed++;
             }
         }
+
+        lettersGuessed.push_back(letter[0]);
         return guessed;
 
     }
 
-    int guessVowel(char letter) {
+    int guessVowel(ostream& outs, istream& ins) {
         int guessed = 0;
-        lettersGuessed.push_back(letter);
+        string letter;
+
+        outs << "Enter a vowel: ";
+
+        getline(ins, letter);
+
+        while (letter.length() != 1 || letter == "" || find(vowels.begin(), vowels.end(), toupper(letter[0])) == vowels.end()) {
+            if (letter == "") {
+                outs << "No input. Enter a single vowel: ";
+                ins.clear();
+                getline(ins, letter);
+            }
+            else {
+                outs << "Invalid input. Enter a single vowel: ";
+                ins.clear();
+                getline(ins, letter);
+            }
+        }
+
         for (char ch : lettersGuessed) {
-            if (ch == letter) {
+            if (ch == letter[0]) {
                 return -1;
             }
         }
         for (char ch : phrase) {
-            if (ch == letter) {
+            if (ch == letter[0]) {
                 guessed++;
             }
         }
+        lettersGuessed.push_back(letter[0]);
         return guessed;
-
 
     }
 
@@ -162,9 +203,12 @@ public:
         }
         outs << endl;
     }
-    bool spinWheel(ostream& outs) {
+
+    int spinWheel() {
         int prizeIndex = rand() % wheel.size();
         int prize = wheel[prizeIndex];
+
+        return prize;
     }
 
     bool guessedPhrase() {

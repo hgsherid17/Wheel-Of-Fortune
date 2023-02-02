@@ -24,6 +24,19 @@ using namespace std;
      cout << "Welcome to Wheel of Fortune!" << endl;
      cout << "<><><><><><><><><><><><><><>" << endl;
 
+     player.readFile("../WOFPhrases.csv");
+     player.setRandom();
+     cout << player.getPhrase() << endl;
+     player.printPhrase(cout);
+     int num = 0;
+
+     num = player.guessConsonant(cout, cin);
+     cout << "Cons: " << num << endl;
+     num = player.guessVowel(cout, cin);
+     cout << "Vow: " << num << endl;
+
+     player.printPhrase(cout);
+/*
      cout << "Press any key to spin the wheel: ";
      getline(cin, input);
      if (input != "") {
@@ -47,7 +60,8 @@ using namespace std;
          }
 
 
-     }
+     }*/
+
         // Yes
             // Read in from file
             // Print sentence and category
