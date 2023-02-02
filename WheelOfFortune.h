@@ -14,13 +14,14 @@
 #include <fstream>
 #include <algorithm>
 #include <ctype.h>
+#include <cctype>
+#include <iomanip>
 
 using namespace std;
 
 class WheelOfFortune {
 private:
     vector<int> wheel;
-    vector<string> categories, phrases;
     string phrase, category;
     vector<char> lettersGuessed;
 
@@ -31,6 +32,7 @@ public:
     WheelOfFortune() {
         wheel = {500, 550, 600, 650, 700, 800, 900, 2500, 500, 550, 600, 650, 700, 0};
         srand(time(NULL));
+
     }
     // Options
     void printOptions(ostream& outs) {
@@ -61,6 +63,7 @@ public:
         inFile.open(filename);
 
         char comma, quote;
+        vector<string> categories, phrases;
 
         if (!inFile) {
             return false;
@@ -88,10 +91,13 @@ public:
             phrases.push_back(phrase);
         }
         inFile.close();
+
+        setRandom(categories, phrases);
+
         return true;
     }
 
-    void setRandom() {
+    void setRandom(vector<string> categories, vector<string> phrases) {
          int index = rand() % phrases.size();
          phrase = phrases[index];
          category = categories[index];
@@ -103,6 +109,10 @@ public:
 
     string getCategory() {
          return this->category;
+    }
+
+    void setPhrase (string p) {
+        this->phrase = p;
     }
 
     int guessConsonant(ostream& outs, istream& ins) {
@@ -117,12 +127,12 @@ public:
          */
         while (letter.length() != 1 || letter == "" || find(vowels.begin(), vowels.end(), toupper(letter[0])) != vowels.end()) {
             if (letter == "") {
-                outs << "No input. Enter a single consonant: ";
+                outs << "No input. Enter a consonant: ";
                 ins.clear();
                 getline(ins, letter);
             }
             else {
-                outs << "Invalid input. Enter a single consonant: ";
+                outs << "That is not a consonant! Try again: ";
                 ins.clear();
                 getline(ins, letter);
             }
@@ -156,17 +166,18 @@ public:
 
         while (letter.length() != 1 || letter == "" || find(vowels.begin(), vowels.end(), toupper(letter[0])) == vowels.end()) {
             if (letter == "") {
-                outs << "No input. Enter a single vowel: ";
+                outs << "No input. Enter a vowel: ";
                 ins.clear();
                 getline(ins, letter);
             }
             else {
-                outs << "Invalid input. Enter a single vowel: ";
+                outs << "That is not a vowel! Try again: ";
                 ins.clear();
                 getline(ins, letter);
             }
         }
 
+        // Do this or prompt again?
         for (char ch : lettersGuessed) {
             if (ch == letter[0]) {
                 return -1;
@@ -182,26 +193,41 @@ public:
 
     }
 
+    /**
+     * TODO:
+     * if not alpha, print normally
+     *
+     */
     void printPhrase(ostream& outs) {
-        int flag = 0;
+        /*
+        outs << "<><><><><><><><><><><><><><><><><><><><><><><><><><><><><>" << endl;
+        outs << "<>                                                      <>" << endl;*/
+        bool guessed = false;
         for (int i = 0; i < phrase.size(); ++i) {
             for (int j = 0; j < lettersGuessed.size(); ++j) {
                  if (toupper(phrase[i]) == toupper(lettersGuessed[j])) {
-                     ++flag;
+                     guessed = true;
                  }
             }
-            if (flag > 0) {
-                outs << (char) toupper(phrase[i]);
+            if (guessed) {
+                outs << (char) toupper(phrase[i]) << " ";
+            }
+            else if (!isalpha(phrase[i])) {
+                outs << phrase[i] << " ";
             }
             else if (isspace(phrase[i])) {
-                outs << " ";
+                outs << "   ";
             }
             else {
-                outs << "_";
+                outs << "_ ";
             }
-            flag = 0;
+            guessed = false;
         }
+
         outs << endl;
+        /*
+        outs << endl << "<>                                                      <>" << endl;
+        outs << "<><><><><><><><><><><><><><><><><><><><><><><><><><><><><>" << endl;*/
     }
 
     int spinWheel() {

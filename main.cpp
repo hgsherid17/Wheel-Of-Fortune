@@ -3,6 +3,7 @@
 //
 #include "WheelOfFortune.h"
 #include <ostream>
+#include <iostream>
 
 using namespace std;
 /**
@@ -20,21 +21,29 @@ using namespace std;
      string input;
 
      // Start game?
-     cout << "<><><><><><><><><><><><><><>" << endl;
-     cout << "Welcome to Wheel of Fortune!" << endl;
-     cout << "<><><><><><><><><><><><><><>" << endl;
+
 
      player.readFile("../WOFPhrases.csv");
-     player.setRandom();
      cout << player.getPhrase() << endl;
      player.printPhrase(cout);
      int num = 0;
 
+     int guessed = 0;
+     guessed = player.guessConsonant(cout, cin);
+     guessed = player.guessConsonant(cout, cin);
+     guessed = player.guessConsonant(cout, cin);
+     while (guessed == -1) {
+        cout << "That letter was already guessed!";
+        cin.clear();
+        guessed = player.guessConsonant(cout, cin);
+     }
+
+     /*
      num = player.guessConsonant(cout, cin);
      cout << "Cons: " << num << endl;
      num = player.guessVowel(cout, cin);
      cout << "Vow: " << num << endl;
-
+*/
      player.printPhrase(cout);
 /*
      cout << "Press any key to spin the wheel: ";
