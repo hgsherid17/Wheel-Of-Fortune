@@ -99,8 +99,14 @@ public:
          return this->category;
     }
 
-    int guessConsonant(char letter) {
+    int guessConsonant(ostream& outs, istream& ins) {
         int guessed = 0;
+        string letter;
+
+        cout << "Enter a consonant: " << endl;
+        getline(cin, letter);
+
+
         lettersGuessed.push_back(letter);
         for (int i = 0; i < lettersGuessed.size(); ++i) {
             if (lettersGuessed[i] == letter) {
@@ -140,7 +146,7 @@ public:
         for (int i = 0; i < phrase.size(); ++i) {
             for (int j = 0; j < lettersGuessed.size(); ++j) {
                  if (toupper(phrase[i]) == toupper(lettersGuessed[j])) {
-                     flag++;
+                     ++flag;
                  }
             }
             if (flag > 0) {
@@ -159,6 +165,24 @@ public:
     bool spinWheel(ostream& outs) {
         int prizeIndex = rand() % wheel.size();
         int prize = wheel[prizeIndex];
+    }
+
+    bool guessedPhrase() {
+        int flag = 0;
+        for (int i = 0; i < phrase.size(); ++i) {
+            for (int j = 0; j < lettersGuessed.size(); ++j) {
+                if (toupper(phrase[i]) == toupper(lettersGuessed[j])) {
+                    ++flag;
+                }
+            }
+        }
+
+        if (flag == phrase.length()) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 };
 

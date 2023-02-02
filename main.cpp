@@ -24,7 +24,7 @@ using namespace std;
      cout << "Welcome to Wheel of Fortune!" << endl;
      cout << "<><><><><><><><><><><><><><>" << endl;
 
-     cout << "Press any key to start: ";
+     cout << "Press any key to spin the wheel: ";
      getline(cin, input);
      if (input != "") {
          player.readFile("../WOFPhrases.csv");
@@ -36,10 +36,12 @@ using namespace std;
          player.printPhrase(cout);
          char choice = player.getOption(cout, cin);
 
+         int vowel;
+         int consonant;
          while (choice != 'e') {
              switch (choice) {
                  case 'c' :
-                     
+
 
              }
          }
@@ -60,7 +62,7 @@ using namespace std;
 
 
 
-
+    // Spin the wheel
 
 
 
