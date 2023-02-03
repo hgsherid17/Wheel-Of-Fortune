@@ -24,6 +24,7 @@ private:
     vector<int> wheel;
     string phrase, category;
     vector<char> lettersGuessed;
+    char lastGuessed;
 
     vector<char> vowels = {'A', 'E', 'I', 'O', 'U'};
 
@@ -56,6 +57,25 @@ public:
 
         return choice;
 
+    }
+    bool activePlayer(ostream& outs, istream& ins) {
+        string active;
+        outs << "Type S to spin the wheel" << endl << "Type E to exit" << endl;
+        getline(ins, active);
+
+        while (active != "E" && active != "S" && active != "e" && active != "s") {
+            outs << "Please choose a valid option!" << endl;
+            outs << "Type S to spin the wheel" << endl << "Type E to exit" << endl;
+            ins.clear();
+            getline(ins, active);
+        }
+
+        if (active == "S" || active == "s") {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     bool readFile(string filename) {
@@ -151,6 +171,7 @@ public:
             }
         }
 
+        lastGuessed = letter[0];
         lettersGuessed.push_back(letter[0]);
         return guessed;
 
@@ -188,6 +209,7 @@ public:
                 guessed++;
             }
         }
+        lastGuessed = letter[0];
         lettersGuessed.push_back(letter[0]);
         return guessed;
 
@@ -225,6 +247,7 @@ public:
         }
 
         outs << endl;
+        outs << "<><><> " << category << " <><><>" << endl;
         /*
         outs << endl << "<>                                                      <>" << endl;
         outs << "<><><><><><><><><><><><><><><><><><><><><><><><><><><><><>" << endl;*/
@@ -253,6 +276,9 @@ public:
         else {
             return false;
         }
+    }
+    char getLastGuessed() {
+        return this->lastGuessed;
     }
 };
 

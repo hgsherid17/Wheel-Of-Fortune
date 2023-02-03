@@ -4,6 +4,7 @@
 #include "WheelOfFortune.h"
 #include <ostream>
 #include <iostream>
+#include <string>
 
 using namespace std;
 /**
@@ -12,8 +13,46 @@ using namespace std;
  */
  int main() {
      // Make object
+     int balance = 0;
      WheelOfFortune player;
+     player.readFile("../WOFPhrases.csv");
+     cout << "Welcome to Wheel of Fortune!" << endl;
+     player.printPhrase(cout);
 
+     while (player.activePlayer(cout, cin)) {
+         int prize = player.spinWheel();
+         if (prize == 0) {
+             balance = 0;
+             cout << "You've gone bankrupt!" << endl;
+             cout << "New balance: $" << balance << endl;
+         }
+         else {
+             cout << "Your prize: $" << prize << endl;
+             cout << "Current balance: $" << balance << endl;
+         }
+         int consonants = player.guessConsonant(cout, cin);
+         while (consonants > 0) {
+             cout << "There were " << consonants << " " << (char) toupper(player.getLastGuessed()) << "'s!" << endl;
+             player.printOptions(cout);
+             
+         }
+
+     }
+
+     // Player spins wheel or exits
+
+
+     // While playing
+        // Consonant guessed after spinning wheel
+
+        // If right
+            // Guess vowel
+            // Spin for new prize
+            // Guess phrase
+
+
+
+     /*
      // Initialize balance
      int balance = 0;
      string phrase;
@@ -37,14 +76,13 @@ using namespace std;
         cin.clear();
         guessed = player.guessConsonant(cout, cin);
      }
-
+*/
      /*
      num = player.guessConsonant(cout, cin);
      cout << "Cons: " << num << endl;
      num = player.guessVowel(cout, cin);
      cout << "Vow: " << num << endl;
 */
-     player.printPhrase(cout);
 /*
      cout << "Press any key to spin the wheel: ";
      getline(cin, input);
