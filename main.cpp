@@ -25,6 +25,7 @@ using namespace std;
              balance = 0;
              cout << "You've gone bankrupt!" << endl;
              cout << "New balance: $" << balance << endl;
+             player.spinWheel();
          }
          else {
              cout << "Your prize: $" << prize << endl;
@@ -32,9 +33,35 @@ using namespace std;
          }
          int consonants = player.guessConsonant(cout, cin);
          while (consonants > 0) {
+             balance += (consonants * prize);
+             player.printPhrase(cout);
              cout << "There were " << consonants << " " << (char) toupper(player.getLastGuessed()) << "'s!" << endl;
-             player.printOptions(cout);
-             
+             cout << "New balance: $" << balance << endl;
+             char option = player.getOption(cout, cin);
+             switch(toupper(option)) {
+                 case 'V': {
+                     int vowels = player.guessVowel(cout, cin);
+                     balance -= 250;
+                     if (vowels > 0) {
+                         cout << "There were " << vowels << " " << player.getLastGuessed() << "'s!" << endl;
+                     } else {
+                         cout << "Sorry, no " << player.getLastGuessed() << " in this puzzle!" << endl;
+                     }
+                     break;
+                 }
+                 case 'P': {
+                     string guess;
+                     cout << "Solve: " << endl;
+                     getline(cin, guess);
+                     player.solvePuzzle(guess);
+                     break;
+                 }
+                 case 'C': {
+                     break;
+                 }
+
+
+             }
          }
 
      }

@@ -47,6 +47,7 @@ public:
 
         printOptions(outs);
 
+        outs << "Choose an option: ";
         getline(cin, option);
         while (option != "c" && option != "v" && option != "p" && option != "e" && option.length() != 1) {
             outs << "Invalid input. Please choose an option: ";
@@ -260,6 +261,21 @@ public:
         return prize;
     }
 
+    bool solvePuzzle(string guess) {
+        int flag = 0;
+        for (int i = 0; i < phrase.size(); ++i) {
+            if (phrase[i] == guess[i]) {
+                ++flag;
+            }
+        }
+
+        if (flag == phrase.size()) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
     bool guessedPhrase() {
         int flag = 0;
         for (int i = 0; i < phrase.size(); ++i) {
@@ -280,6 +296,7 @@ public:
     char getLastGuessed() {
         return this->lastGuessed;
     }
+
 };
 
 
