@@ -14,39 +14,52 @@ using namespace std;
  int main() {
      // Make object
      int balance = 0;
+     bool solved = false;
+     bool playing = true;
+     int consonants = 0;
+     int vowels = 0;
+
      WheelOfFortune player;
      player.readFile("../WOFPhrases.csv");
      cout << "Welcome to Wheel of Fortune!" << endl;
      player.printPhrase(cout);
 
-     while (player.activePlayer(cout, cin)) {
+     playing = player.activePlayer(cout, cin);
+
+     while (playing && !solved) {
          int prize = player.spinWheel();
-         if (prize == 0) {
-             balance = 0;
-             cout << "You've gone bankrupt!" << endl;
-             cout << "New balance: $" << balance << endl;
-             player.spinWheel();
-         }
-         else {
-             cout << "Your prize: $" << prize << endl;
-             cout << "Current balance: $" << balance << endl;
-         }
-         int consonants = player.guessConsonant(cout, cin);
+         cout << "Your prize: $" << prize << endl;
+         cout << "Current balance: $" << balance << endl;
+
+         consonants = player.guessConsonant(cout, cin);
          while (consonants > 0) {
              balance += (consonants * prize);
              player.printPhrase(cout);
-             cout << "There were " << consonants << " " << (char) toupper(player.getLastGuessed()) << "'s!" << endl;
+             if (consonants == 1) {
+                 cout << "There was " << consonants << " " << (char) toupper(player.getLastGuessed()) << "!" << endl;
+             }
+             else {
+                 cout << "There were " << consonants << " " << (char) toupper(player.getLastGuessed()) << "'s!" << endl;
+             }
+
+
              cout << "New balance: $" << balance << endl;
              char option = player.getOption(cout, cin);
              switch(toupper(option)) {
                  case 'V': {
-                     int vowels = player.guessVowel(cout, cin);
+                     vowels = player.guessVowel(cout, cin);
                      balance -= 250;
                      if (vowels > 0) {
-                         cout << "There were " << vowels << " " << player.getLastGuessed() << "'s!" << endl;
-                     } else {
-                         cout << "Sorry, no " << player.getLastGuessed() << " in this puzzle!" << endl;
+                         cout << "There were " << vowels << " " << (char) toupper(player.getLastGuessed()) << "'s!" << endl;
                      }
+                     else if (vowels == 1) {
+                         cout << "There was " << vowels << " " << (char) toupper(player.getLastGuessed()) << "!" << endl;
+                     }
+                     else {
+                         cout << "Sorry, no " << (char) toupper(player.getLastGuessed()) << " in this puzzle!" << endl;
+                         consonants = 0;
+                     }
+                     player.printPhrase(cout);
                      break;
                  }
                  case 'P': {
@@ -57,14 +70,33 @@ using namespace std;
                      break;
                  }
                  case 'C': {
+                     player.spinWheel();
+                     consonants = player.guessConsonant(cout, cin);
                      break;
                  }
 
-
              }
          }
+         if (consonants == 0) {
+             player.printPhrase(cout);
+             cout << "There were no " << (char) toupper(player.getLastGuessed()) << "'s!" << endl;
+         }
+         while (consonants == -1) {
+             player.printPhrase(cout);
+             consonants = player.guessConsonant(cout, cin);
+         }
+         playing = player.activePlayer(cout, cin);
+
+         if (player.guessedPhrase()) {
+             cout << "You solved the puzzle!" << endl;
+             player.printPhrase(cout);
+             playing = player.playAgain(cout, cin);
+         }
+
+
 
      }
+     cout << "Thank you for playing! See you later :)" << endl;
 
      // Player spins wheel or exits
 

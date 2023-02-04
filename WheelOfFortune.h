@@ -31,15 +31,17 @@ private:
 
 public:
     WheelOfFortune() {
-        wheel = {500, 550, 600, 650, 700, 800, 900, 2500, 500, 550, 600, 650, 700, 0};
+        wheel = {500, 550, 600, 650, 700, 800, 900, 2500, 500, 550, 600, 650, 700};
         srand(time(NULL));
 
     }
     // Options
     void printOptions(ostream& outs) {
-        outs << "<><>Options<><>" << endl;
+        outs << endl << "<><><>Options<><><>" << endl;
         outs << "C - Guess a consonant" << endl << "V - Buy a vowel" << endl << "P - Solve the puzzle!" << endl << "E - Exit" << endl;
+        outs << "<><><><><><><><><><>" << endl << endl;
     }
+
 
     char getOption(ostream& outs, istream& ins) {
         string option;
@@ -61,7 +63,8 @@ public:
     }
     bool activePlayer(ostream& outs, istream& ins) {
         string active;
-        outs << "Type S to spin the wheel" << endl << "Type E to exit" << endl;
+        outs << "S - spin the wheel" << endl << "E - Exit game" << endl;
+        outs << "Your choice: ";
         getline(ins, active);
 
         while (active != "E" && active != "S" && active != "e" && active != "s") {
@@ -168,7 +171,7 @@ public:
         }
         for (char ch : phrase) {
             if (ch == letter[0]) {
-                guessed++;
+                ++guessed;
             }
         }
 
@@ -225,6 +228,7 @@ public:
         /*
         outs << "<><><><><><><><><><><><><><><><><><><><><><><><><><><><><>" << endl;
         outs << "<>                                                      <>" << endl;*/
+        outs << "            ";
         bool guessed = false;
         for (int i = 0; i < phrase.size(); ++i) {
             for (int j = 0; j < lettersGuessed.size(); ++j) {
@@ -248,7 +252,7 @@ public:
         }
 
         outs << endl;
-        outs << "<><><> " << category << " <><><>" << endl;
+        outs << "            " << "<><><> " << category << " <><><>" << endl;
         /*
         outs << endl << "<>                                                      <>" << endl;
         outs << "<><><><><><><><><><><><><><><><><><><><><><><><><><><><><>" << endl;*/
@@ -295,6 +299,24 @@ public:
     }
     char getLastGuessed() {
         return this->lastGuessed;
+    }
+    bool playAgain(ostream& outs, istream& ins) {
+        string ans;
+        outs << "Play again? (y/n) " << endl;
+        getline(ins, ans);
+
+        while (ans.length() != 1 || toupper(ans[0]) != 'Y' && toupper(ans[0]) != 'N') {
+            outs << "Invalid input. Please type y or n: " << endl;
+            ins.clear();
+            getline(ins, ans);
+        }
+
+        if (toupper(ans[0]) == 'Y') {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
 };
