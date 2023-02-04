@@ -36,7 +36,7 @@ public:
 
     }
     // Options
-    void printOptions(ostream& outs) {
+    void printGameOptions(ostream& outs) {
         outs << endl << "<><><>Options<><><>" << endl;
         outs << "C - Guess a consonant" << endl << "V - Buy a vowel" << endl << "P - Solve the puzzle!" << endl << "E - Exit" << endl;
         outs << "<><><><><><><><><><>" << endl << endl;
@@ -45,33 +45,75 @@ public:
 
     char getOption(ostream& outs, istream& ins) {
         string option;
-        char choice;
 
-        printOptions(outs);
+        bool valid = false;
+
+        printGameOptions(outs);
 
         outs << "Choose an option: ";
-        getline(cin, option);
-        while (option != "c" && option != "v" && option != "p" && option != "e" && option.length() != 1) {
-            outs << "Invalid input. Please choose an option: ";
-            getline(cin, option);
+        getline(ins, option);
+
+        while (!valid) {
+            if (option =="") {
+                valid = false;
+                outs << "No input. Please choose an option: ";
+                ins.clear();
+                getline(ins, option);
+            }
+            else if (option.length() != 1 || toupper(option[0]) != 'C' && toupper(option[0]) != 'V' && toupper(option[0]) != 'P' && toupper(option[0]) != 'E') {
+                valid = false;
+                outs << "Did you even look at the options? Here they are again: " << endl;
+                printGameOptions(outs);
+
+                ins.clear();
+                outs << "Choose an option: ";
+                getline(ins, option);
+            }
+            else {
+                valid = true;
+            }
         }
+        return option[0];
+    }
 
-        choice = option[0];
-
-        return choice;
-
+    void printRoundOptions(ostream& outs) {
+        outs << endl << "<><><>Options<><><>" << endl;
+        outs << "S - Spin the wheel!" << endl << "E - Exit game" << endl;
+        outs << "<><><><><><><><><><>" << endl << endl;
+        outs << "Choose an option: ";
     }
     bool activePlayer(ostream& outs, istream& ins) {
         string active;
-        outs << "S - spin the wheel" << endl << "E - Exit game" << endl;
-        outs << "Your choice: ";
+        bool valid = false;
+        printRoundOptions(outs);
         getline(ins, active);
 
-        while (active != "E" && active != "S" && active != "e" && active != "s") {
-            outs << "Please choose a valid option!" << endl;
-            outs << "Type S to spin the wheel" << endl << "Type E to exit" << endl;
-            ins.clear();
-            getline(ins, active);
+        while (!valid) {
+            if (active == ""){
+                valid = false;
+                outs << "No input. Choose an option: ";
+                ins.clear();
+                getline(ins, active);
+            }
+            else if (active.length() != 1) {
+                valid = false;
+                outs << "That is not an option! Choose one from the list below: " << endl;
+                printRoundOptions(outs);
+                ins.clear();
+                getline(ins, active);
+            }
+
+            else if (toupper(active[0]) != 'E' && toupper(active[0]) != 'S') {
+                valid = false;
+                outs << "That is not an option! Choose one from the list below: " << endl;
+                printRoundOptions(outs);
+                ins.clear();
+                getline(ins, active);
+            }
+            else {
+                valid = true;
+            }
+
         }
 
         if (active == "S" || active == "s") {
@@ -142,33 +184,36 @@ public:
     int guessConsonant(ostream& outs, istream& ins) {
         int guessed = 0;
         string letter;
+        bool valid = false;
 
-        outs << "Enter a consonant: ";
+        outs << "Guess a consonant: ";
         getline(ins, letter);
 
-        /**
-         * TODO: validate if digit in string
-         */
-        while (letter.length() != 1 || letter == "" || find(vowels.begin(), vowels.end(), toupper(letter[0])) != vowels.end()) {
-            if (letter == "") {
-                outs << "No input. Enter a consonant: ";
-                ins.clear();
-                getline(ins, letter);
-            }
-            else {
-                outs << "That is not a consonant! Try again: ";
-                ins.clear();
-                getline(ins, letter);
-            }
+        while (!valid) {
+             if (letter == "") {
+                 valid = false;
+                 outs << "No input. Guess a consonant: ";
+                 ins.clear();
+                 getline(ins, letter);
+             }
+             else if (letter.length() != 1 || !isalpha(letter[0]) || find(vowels.begin(), vowels.end(), toupper(letter[0])) != vowels.end()){
+                 valid = false;
+                 outs << "That is not a consonant! Try again: ";
+                 ins.clear();
+                 getline(ins, letter);
+             }
+             else if (find(lettersGuessed.begin(), lettersGuessed.end(), letter[0]) != lettersGuessed.end()) {
+                 valid = false;
+                 outs << "You have already guessed that letter!";
+                 outs << " Try again: ";
+                 ins.clear();
+                 getline(ins, letter);
+             }
+             else {
+                 valid = true;
+             }
         }
 
-
-        for (int i = 0; i < lettersGuessed.size(); ++i) {
-            if (lettersGuessed[i] == letter[0]) {
-                cout << "You have already guessed that letter!" << endl;
-                return -1;
-            }
-        }
         for (char ch : phrase) {
             if (ch == letter[0]) {
                 ++guessed;
@@ -184,30 +229,37 @@ public:
     int guessVowel(ostream& outs, istream& ins) {
         int guessed = 0;
         string letter;
+        bool valid = false;
 
-        outs << "Enter a vowel: ";
+        outs << "Guess a vowel: ";
 
         getline(ins, letter);
 
-        while (letter.length() != 1 || letter == "" || find(vowels.begin(), vowels.end(), toupper(letter[0])) == vowels.end()) {
+        while (!valid) {
             if (letter == "") {
-                outs << "No input. Enter a vowel: ";
+                valid = false;
+                cout << "No input. Guess a vowel: ";
+                ins.clear();
+                getline(ins, letter);
+            }
+            else if (letter.length() != 1 || find(vowels.begin(), vowels.end(), toupper(letter[0])) == vowels.end()) {
+                valid = false;
+                cout << "That is not a vowel! Try again: " << endl;
+                ins.clear();
+                getline(ins, letter);
+            }
+            else if (find(lettersGuessed.begin(), lettersGuessed.end(), toupper(letter[0])) != lettersGuessed.end()) {
+                valid = false;
+                cout << "You have already guessed that letter! Try again: " << endl;
                 ins.clear();
                 getline(ins, letter);
             }
             else {
-                outs << "That is not a vowel! Try again: ";
-                ins.clear();
-                getline(ins, letter);
+                valid = true;
             }
+
         }
 
-        // Do this or prompt again?
-        for (char ch : lettersGuessed) {
-            if (ch == letter[0]) {
-                return -1;
-            }
-        }
         for (char ch : phrase) {
             if (ch == letter[0]) {
                 guessed++;

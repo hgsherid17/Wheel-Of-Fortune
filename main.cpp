@@ -32,7 +32,7 @@ using namespace std;
          cout << "Current balance: $" << balance << endl;
 
          consonants = player.guessConsonant(cout, cin);
-         while (consonants > 0) {
+         if (consonants > 0) {
              balance += (consonants * prize);
              player.printPhrase(cout);
              if (consonants == 1) {
@@ -49,11 +49,11 @@ using namespace std;
                  case 'V': {
                      vowels = player.guessVowel(cout, cin);
                      balance -= 250;
-                     if (vowels > 0) {
-                         cout << "There were " << vowels << " " << (char) toupper(player.getLastGuessed()) << "'s!" << endl;
-                     }
-                     else if (vowels == 1) {
+                     if (vowels == 1) {
                          cout << "There was " << vowels << " " << (char) toupper(player.getLastGuessed()) << "!" << endl;
+                     }
+                     else if (vowels > 0) {
+                         cout << "There were " << vowels << " " << (char) toupper(player.getLastGuessed()) << "'s!" << endl;
                      }
                      else {
                          cout << "Sorry, no " << (char) toupper(player.getLastGuessed()) << " in this puzzle!" << endl;
@@ -67,22 +67,29 @@ using namespace std;
                      cout << "Solve: " << endl;
                      getline(cin, guess);
                      player.solvePuzzle(guess);
+                     if (!player.guessedPhrase()) {
+                         cout << "Sorry, you did not solve the puzzle." << endl;
+                     }
                      break;
                  }
                  case 'C': {
-                     player.spinWheel();
                      consonants = player.guessConsonant(cout, cin);
+                     //break;
+                 }
+                 case 'E': {
+                     playing = false;
+                     solved = true;
                      break;
                  }
 
              }
          }
-         if (consonants == 0) {
+         else if (consonants == 0) {
              player.printPhrase(cout);
              cout << "There were no " << (char) toupper(player.getLastGuessed()) << "'s!" << endl;
          }
+
          while (consonants == -1) {
-             player.printPhrase(cout);
              consonants = player.guessConsonant(cout, cin);
          }
          playing = player.activePlayer(cout, cin);
