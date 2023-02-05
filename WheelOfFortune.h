@@ -23,10 +23,12 @@ class WheelOfFortune {
 private:
     string phrase, category;
     vector<char> lettersGuessed;
+    //vector<char> vowelsGuessed;
     char lastGuessed;
 
     const vector<int> wheel = {500, 550, 600, 650, 700, 800, 900, 2500, 500, 550, 600, 650, 700};
     const vector<char> vowels = {'A', 'E', 'I', 'O', 'U'};
+
 
 public:
     WheelOfFortune() {
@@ -37,7 +39,7 @@ public:
     // Options
     void printGameOptions(ostream& outs) {
         outs << endl << "<><><>Options<><><>" << endl;
-        outs << "C - Guess a consonant" << endl << "V - Buy a vowel for $250" << endl << "P - Solve the puzzle!" << endl << "E - Exit" << endl;
+        outs << "C - Guess a consonant" << endl << "V - Buy a vowel for $250" << endl << "P - Solve the puzzle!" << endl << "E - Exit game" << endl;
         outs << "<><><><><><><><><><>" << endl << endl;
     }
 
@@ -72,7 +74,7 @@ public:
                 valid = true;
             }
         }
-        return option[0];
+        return toupper(option[0]);
     }
 
     void printRoundOptions(ostream& outs) {
@@ -351,7 +353,7 @@ public:
         }
     }
     char getLastGuessed() {
-        return this->lastGuessed;
+        return (char) toupper(lastGuessed);
     }
     bool playAgain(ostream& outs, istream& ins) {
         string ans;
@@ -365,6 +367,7 @@ public:
         }
 
         if (toupper(ans[0]) == 'Y') {
+            lettersGuessed = {};
             return true;
         }
         else {
@@ -381,6 +384,7 @@ public:
                 }
             }
         }
+        return numVowels;
     }
 
 };
