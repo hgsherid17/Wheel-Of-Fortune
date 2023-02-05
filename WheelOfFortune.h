@@ -21,24 +21,23 @@ using namespace std;
 
 class WheelOfFortune {
 private:
-    vector<int> wheel;
     string phrase, category;
     vector<char> lettersGuessed;
     char lastGuessed;
 
-    vector<char> vowels = {'A', 'E', 'I', 'O', 'U'};
-
+    const vector<int> wheel = {500, 550, 600, 650, 700, 800, 900, 2500, 500, 550, 600, 650, 700};
+    const vector<char> vowels = {'A', 'E', 'I', 'O', 'U'};
 
 public:
     WheelOfFortune() {
-        wheel = {500, 550, 600, 650, 700, 800, 900, 2500, 500, 550, 600, 650, 700};
+        lettersGuessed = {};
         srand(time(NULL));
-
     }
+
     // Options
     void printGameOptions(ostream& outs) {
         outs << endl << "<><><>Options<><><>" << endl;
-        outs << "C - Guess a consonant" << endl << "V - Buy a vowel" << endl << "P - Solve the puzzle!" << endl << "E - Exit" << endl;
+        outs << "C - Guess a consonant" << endl << "V - Buy a vowel for $250" << endl << "P - Solve the puzzle!" << endl << "E - Exit" << endl;
         outs << "<><><><><><><><><><>" << endl << endl;
     }
 
@@ -202,7 +201,7 @@ public:
                  ins.clear();
                  getline(ins, letter);
              }
-             else if (find(lettersGuessed.begin(), lettersGuessed.end(), letter[0]) != lettersGuessed.end()) {
+             else if (find(lettersGuessed.begin(), lettersGuessed.end(), toupper(letter[0])) != lettersGuessed.end()) {
                  valid = false;
                  outs << "You have already guessed that letter!";
                  outs << " Try again: ";
@@ -214,14 +213,15 @@ public:
              }
         }
 
-        for (char ch : phrase) {
-            if (ch == letter[0]) {
+        for (int i = 0; i < phrase.length(); ++i) {
+            if (toupper(phrase[i]) == toupper(letter[0])) {
                 ++guessed;
             }
         }
 
         lastGuessed = letter[0];
-        lettersGuessed.push_back(letter[0]);
+        lettersGuessed.push_back((char) toupper(letter[0]));
+
         return guessed;
 
     }
@@ -244,13 +244,13 @@ public:
             }
             else if (letter.length() != 1 || find(vowels.begin(), vowels.end(), toupper(letter[0])) == vowels.end()) {
                 valid = false;
-                cout << "That is not a vowel! Try again: " << endl;
+                cout << "That is not a vowel! Try again: ";
                 ins.clear();
                 getline(ins, letter);
             }
             else if (find(lettersGuessed.begin(), lettersGuessed.end(), toupper(letter[0])) != lettersGuessed.end()) {
                 valid = false;
-                cout << "You have already guessed that letter! Try again: " << endl;
+                cout << "You have already guessed that letter! Try again: ";
                 ins.clear();
                 getline(ins, letter);
             }
@@ -260,13 +260,13 @@ public:
 
         }
 
-        for (char ch : phrase) {
-            if (ch == letter[0]) {
+        for (int i = 0; i < phrase.length(); ++i) {
+            if (toupper(phrase[i]) == toupper(letter[0])) {
                 guessed++;
             }
         }
         lastGuessed = letter[0];
-        lettersGuessed.push_back(letter[0]);
+        lettersGuessed.push_back((char) toupper(letter[0]));
         return guessed;
 
     }
@@ -274,7 +274,7 @@ public:
     /**
      * TODO:
      * if not alpha, print normally
-     *
+     * get a lenght for seetw
      */
     void printPhrase(ostream& outs) {
         /*
@@ -319,8 +319,9 @@ public:
 
     bool solvePuzzle(string guess) {
         int flag = 0;
+
         for (int i = 0; i < phrase.size(); ++i) {
-            if (phrase[i] == guess[i]) {
+            if (toupper(phrase[i]) == toupper(guess[i])) {
                 ++flag;
             }
         }
@@ -334,7 +335,7 @@ public:
     }
     bool guessedPhrase() {
         int flag = 0;
-        for (int i = 0; i < phrase.size(); ++i) {
+        for (int i = 0; i < phrase.length(); ++i) {
             for (int j = 0; j < lettersGuessed.size(); ++j) {
                 if (toupper(phrase[i]) == toupper(lettersGuessed[j])) {
                     ++flag;
@@ -354,7 +355,7 @@ public:
     }
     bool playAgain(ostream& outs, istream& ins) {
         string ans;
-        outs << "Play again? (y/n) " << endl;
+        outs << "Play again? (y/n) ";
         getline(ins, ans);
 
         while (ans.length() != 1 || toupper(ans[0]) != 'Y' && toupper(ans[0]) != 'N') {
@@ -368,6 +369,17 @@ public:
         }
         else {
             return false;
+        }
+    }
+    int getNumVowels() {
+        int numVowels = 0;
+        phrase = "Heapalo"; // 3
+        for (int i = 0; i < phrase.length(); ++i) {
+            for (int j = 0; j < vowels.size(); ++j) {
+                if (phrase[i] == vowels[j]) {
+                    ++numVowels;
+                }
+            }
         }
     }
 

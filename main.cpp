@@ -18,81 +18,109 @@ using namespace std;
      bool playing = true;
      int consonants = 0;
      int vowels = 0;
+     char option;
 
      WheelOfFortune player;
      player.readFile("../WOFPhrases.csv");
      cout << "Welcome to Wheel of Fortune!" << endl;
-     player.printPhrase(cout);
 
+
+     player.printPhrase(cout);
+     cout << player.getPhrase() << endl;
      playing = player.activePlayer(cout, cin);
 
      while (playing && !solved) {
+         cout << endl << "Spinning the Wheel... " << endl;
          int prize = player.spinWheel();
-         cout << "Your prize: $" << prize << endl;
+         player.printPhrase(cout);
+         cout << endl << "Your prize: $" << prize << endl;
          cout << "Current balance: $" << balance << endl;
 
          consonants = player.guessConsonant(cout, cin);
-         if (consonants > 0) {
+
+         while (consonants != 0) {
              balance += (consonants * prize);
              player.printPhrase(cout);
+
              if (consonants == 1) {
-                 cout << "There was " << consonants << " " << (char) toupper(player.getLastGuessed()) << "!" << endl;
+                 cout << "There is " << consonants << " " << (char) toupper(player.getLastGuessed()) << "!" << endl;
              }
              else {
-                 cout << "There were " << consonants << " " << (char) toupper(player.getLastGuessed()) << "'s!" << endl;
+                 cout << "There are " << consonants << " " << (char) toupper(player.getLastGuessed()) << "'s!" << endl;
              }
-
 
              cout << "New balance: $" << balance << endl;
-             char option = player.getOption(cout, cin);
-             switch(toupper(option)) {
-                 case 'V': {
-                     vowels = player.guessVowel(cout, cin);
-                     balance -= 250;
-                     if (vowels == 1) {
-                         cout << "There was " << vowels << " " << (char) toupper(player.getLastGuessed()) << "!" << endl;
+
+             option = player.getOption(cout, cin);
+
+             while (option != 'X') {
+                 switch(toupper(option)) {
+                     case 'V': {
+                         if (balance > 250) {
+                             vowels = player.guessVowel(cout, cin);
+                             balance -= 250;
+                             player.printPhrase(cout);
+
+                             if (vowels == 1) {
+                                 cout << "There is " << vowels << " " << (char) toupper(player.getLastGuessed()) << "!" << endl;
+                                 option = player.getOption(cout, cin);
+                                 break;
+                             } else if (vowels > 1) {
+                                 cout << "There are " << vowels << " " << (char) toupper(player.getLastGuessed()) << "'s!"
+                                      << endl;
+                                 option = player.getOption(cout, cin);
+                                 break;
+                             }
+                             else {
+                                 cout << "Sorry, there are no " << (char) toupper(player.getLastGuessed())
+                                      << "'s in this puzzle!" << endl;
+                                 option = 'X';
+                                 break;
+                             }
+                         }
+                         else {
+                             cout << "You do not have enough money to buy a vowel!" << endl;
+                             option = player.getOption(cout, cin);
+                             break;
+                         }
+
                      }
-                     else if (vowels > 0) {
-                         cout << "There were " << vowels << " " << (char) toupper(player.getLastGuessed()) << "'s!" << endl;
+                     case 'P': {
+                         string guess;
+                         cout << "Solve: ";
+                         getline(cin, guess);
+                         //player.solvePuzzle(guess);
+                         if ((player.solvePuzzle(guess))) {
+                             player.printPhrase(cout);
+                             cout << "You solved it!" << endl;
+                             playing = player.playAgain(cout, cin);
+                         }
+                         else {
+                            cout << "Sorry, you did not solve the puzzle. Guess more letters and try again!" << endl;
+                         }
+                         option = 'X';
+                         break;
                      }
-                     else {
-                         cout << "Sorry, no " << (char) toupper(player.getLastGuessed()) << " in this puzzle!" << endl;
-                         consonants = 0;
+                     case 'C': {
+                         consonants = player.guessConsonant(cout, cin);
+                         option = 'X';
+                         break;
                      }
-                     player.printPhrase(cout);
-                     break;
-                 }
-                 case 'P': {
-                     string guess;
-                     cout << "Solve: " << endl;
-                     getline(cin, guess);
-                     player.solvePuzzle(guess);
-                     if (!player.guessedPhrase()) {
-                         cout << "Sorry, you did not solve the puzzle." << endl;
+                     case 'E': {
+                         playing = false;
+                         solved = true;
+                         option = 'X';
+                         break;
                      }
-                     break;
-                 }
-                 case 'C': {
-                     consonants = player.guessConsonant(cout, cin);
-                     //break;
-                 }
-                 case 'E': {
-                     playing = false;
-                     solved = true;
-                     break;
                  }
 
              }
          }
-         else if (consonants == 0) {
+         if (consonants == 0) {
              player.printPhrase(cout);
-             cout << "There were no " << (char) toupper(player.getLastGuessed()) << "'s!" << endl;
+             cout << "Sorry, there are no " << (char) toupper(player.getLastGuessed()) << "'s in this puzzle!" << endl;
+             cout << "Balance: " << balance << endl;
          }
-
-         while (consonants == -1) {
-             consonants = player.guessConsonant(cout, cin);
-         }
-         playing = player.activePlayer(cout, cin);
 
          if (player.guessedPhrase()) {
              cout << "You solved the puzzle!" << endl;
@@ -100,7 +128,9 @@ using namespace std;
              playing = player.playAgain(cout, cin);
          }
 
-
+         if (playing) {
+             playing = player.activePlayer(cout, cin);
+         }
 
      }
      cout << "Thank you for playing! See you later :)" << endl;
