@@ -17,7 +17,18 @@
 #include <iomanip>
 
 using namespace std;
-
+/**
+ * The Wheel of Fortune class represents functions of the wheel of fortune game.
+ * It has the following fields:
+ * phrase: the current puzzle to be guessed by the user
+ * category: the topic of the given puzzle
+ * letterGuessed: a vector to hold each letter the user has guessed
+ * phrases: a vector to hold all possible phrases
+ * categories: a vector to hold all possible categories
+ * lastGuessed: holds the last letter to be guessed by the user
+ * wheel: a constant vector that holds the prizes offered
+ * vowels: a constant vector to hold vowels
+ */
 class WheelOfFortune {
 private:
     string phrase, category;

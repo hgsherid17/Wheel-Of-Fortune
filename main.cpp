@@ -54,20 +54,27 @@ using namespace std;
          if (consonants > 1) {
              cout << "There are " << consonants << " " << player.getLastGuessed() << "'s!" << endl;
              balance += (consonants * prize);
-             cout << "New balance: $" << balance << endl;
+             cout << "Balance: $" << balance << endl;
              round = true;
          }
          else if (consonants == 1) {
              cout << "There is " << consonants << " " << player.getLastGuessed() << "!" << endl;
              balance += prize;
-             cout << "New balance: $" << balance << endl;
+             cout << "Balance: $" << balance << endl;
              round = true;
          }
          else {
              cout << "Sorry, there are no " << player.getLastGuessed() << "'s in this puzzle!" << endl;
+             cout << "Balance: $" << balance << endl;
              round = false;
          }
 
+         if (player.guessedPhrase()) {
+             cout << "Congratulations, you solved the puzzle!" << endl;
+             solved = true;
+             round = false;
+             option = 'E';
+         }
          // If user guesses a consonant correctly, allow them more game options
          while (round) {
              option = player.getOption(cout, cin);
@@ -94,13 +101,16 @@ using namespace std;
                          // Display message based on number of vowels guessed
                          if (vowels > 1) {
                              cout << "There are " << vowels << " " << player.getLastGuessed() << "'s!" << endl;
+
                          } else if (vowels == 1) {
                              cout << "There is " << vowels << " " << player.getLastGuessed() << "! " << endl;
+
                          } else {
                              // If they guess wrong, restart round
                              cout << "Sorry, there are no " << player.getLastGuessed() << "'s in this puzzle!" << endl;
                              round = false;
                          }
+                         cout << "Balance: $" << balance << endl;
                          break;
                      }
                      // If insufficient funds, reprompt user to choose another option
@@ -109,12 +119,18 @@ using namespace std;
                          option = player.getOption(cout, cin);
                          break;
                      }
+                     break;
                  }
                  // User chose to solve the puzzle
                  case 'P': {
                      string guess;
                      cout << "Solve the puzzle: ";
                      getline(cin, guess);
+                     while (guess == "") {
+                         cout << "No input. Please try to solve the puzzle: ";
+                         cin.clear();
+                         getline(cin, guess);
+                     }
 
                      // Jump out of loop if user guesses correctly
                      if ((player.solvePuzzle(guess))) {
@@ -138,14 +154,12 @@ using namespace std;
                      option = 'C';
                  }
              }
+             if (player.guessedPhrase()) {
+                 cout << "Congratulations, you solved the puzzle!" << endl;
+                 solved = true;
+             }
 
          }
-
-         // If all letters are guessed, player has solved the puzzle
-         if (player.guessedPhrase()) {
-             solved = true;
-         }
-
          // If the player has solved the puzzle
          if (solved){
              // Ask if they would like to play again
