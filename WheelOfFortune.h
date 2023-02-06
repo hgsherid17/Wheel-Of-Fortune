@@ -13,7 +13,6 @@
 #include <iostream>
 #include <fstream>
 #include <algorithm>
-#include <ctype.h>
 #include <cctype>
 #include <iomanip>
 
@@ -23,7 +22,7 @@ class WheelOfFortune {
 private:
     string phrase, category;
     vector<char> lettersGuessed;
-    //vector<char> vowelsGuessed;
+    vector<string> categories, phrases;
     char lastGuessed;
 
     const vector<int> wheel = {500, 550, 600, 650, 700, 800, 900, 2500, 500, 550, 600, 650, 700};
@@ -31,361 +30,129 @@ private:
 
 
 public:
-    WheelOfFortune() {
-        lettersGuessed = {};
-        srand(time(NULL));
-    }
+    /**
+     * Default constructor initializes fields
+     */
+    WheelOfFortune();
 
-    // Options
-    void printGameOptions(ostream& outs) {
-        outs << endl << "<><><>Options<><><>" << endl;
-        outs << "C - Guess a consonant" << endl << "V - Buy a vowel for $250" << endl << "P - Solve the puzzle!" << endl << "E - Exit game" << endl;
-        outs << "<><><><><><><><><><>" << endl << endl;
-    }
+    // Getters
+    string getPhrase();
+    string getCategory();
+    char getLastGuessed();
+    vector<char> getLettersGuessed();
+    vector<string> getPhrases();
+    vector<string> getCategories();
 
-
-    char getOption(ostream& outs, istream& ins) {
-        string option;
-
-        bool valid = false;
-
-        printGameOptions(outs);
-
-        outs << "Choose an option: ";
-        getline(ins, option);
-
-        while (!valid) {
-            if (option =="") {
-                valid = false;
-                outs << "No input. Please choose an option: ";
-                ins.clear();
-                getline(ins, option);
-            }
-            else if (option.length() != 1 || toupper(option[0]) != 'C' && toupper(option[0]) != 'V' && toupper(option[0]) != 'P' && toupper(option[0]) != 'E') {
-                valid = false;
-                outs << "Did you even look at the options? Here they are again: " << endl;
-                printGameOptions(outs);
-
-                ins.clear();
-                outs << "Choose an option: ";
-                getline(ins, option);
-            }
-            else {
-                valid = true;
-            }
-        }
-        return toupper(option[0]);
-    }
-
-    void printRoundOptions(ostream& outs) {
-        outs << endl << "<><><>Options<><><>" << endl;
-        outs << "S - Spin the wheel!" << endl << "E - Exit game" << endl;
-        outs << "<><><><><><><><><><>" << endl << endl;
-        outs << "Choose an option: ";
-    }
-    bool activePlayer(ostream& outs, istream& ins) {
-        string active;
-        bool valid = false;
-        printRoundOptions(outs);
-        getline(ins, active);
-
-        while (!valid) {
-            if (active == ""){
-                valid = false;
-                outs << "No input. Choose an option: ";
-                ins.clear();
-                getline(ins, active);
-            }
-            else if (active.length() != 1) {
-                valid = false;
-                outs << "That is not an option! Choose one from the list below: " << endl;
-                printRoundOptions(outs);
-                ins.clear();
-                getline(ins, active);
-            }
-
-            else if (toupper(active[0]) != 'E' && toupper(active[0]) != 'S') {
-                valid = false;
-                outs << "That is not an option! Choose one from the list below: " << endl;
-                printRoundOptions(outs);
-                ins.clear();
-                getline(ins, active);
-            }
-            else {
-                valid = true;
-            }
-
-        }
-
-        if (active == "S" || active == "s") {
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-
-    bool readFile(string filename) {
-        ifstream inFile;
-        inFile.open(filename);
-
-        char comma, quote;
-        vector<string> categories, phrases;
-
-        if (!inFile) {
-            return false;
-        }
-
-        while (inFile && inFile.peek() != EOF) {
-            if (inFile.peek() == '"') {
-                inFile >> quote;
-                getline(inFile, category, '"');
-                inFile >> comma;
-            }
-            else {
-                getline(inFile, category, ',');
-            }
-
-            if (inFile.peek() == '"') {
-                inFile >> quote;
-                getline(inFile, phrase, '"');
-                inFile >> comma;
-            }
-            else {
-                getline(inFile, phrase, '\n');
-            }
-            categories.push_back(category);
-            phrases.push_back(phrase);
-        }
-        inFile.close();
-
-        setRandom(categories, phrases);
-
-        return true;
-    }
-
-    void setRandom(vector<string> categories, vector<string> phrases) {
-         int index = rand() % phrases.size();
-         phrase = phrases[index];
-         category = categories[index];
-    }
-
-    string getPhrase() {
-         return this->phrase;
-     }
-
-    string getCategory() {
-         return this->category;
-    }
-
-    void setPhrase (string p) {
-        this->phrase = p;
-    }
-
-    int guessConsonant(ostream& outs, istream& ins) {
-        int guessed = 0;
-        string letter;
-        bool valid = false;
-
-        outs << "Guess a consonant: ";
-        getline(ins, letter);
-
-        while (!valid) {
-             if (letter == "") {
-                 valid = false;
-                 outs << "No input. Guess a consonant: ";
-                 ins.clear();
-                 getline(ins, letter);
-             }
-             else if (letter.length() != 1 || !isalpha(letter[0]) || find(vowels.begin(), vowels.end(), toupper(letter[0])) != vowels.end()){
-                 valid = false;
-                 outs << "That is not a consonant! Try again: ";
-                 ins.clear();
-                 getline(ins, letter);
-             }
-             else if (find(lettersGuessed.begin(), lettersGuessed.end(), toupper(letter[0])) != lettersGuessed.end()) {
-                 valid = false;
-                 outs << "You have already guessed that letter!";
-                 outs << " Try again: ";
-                 ins.clear();
-                 getline(ins, letter);
-             }
-             else {
-                 valid = true;
-             }
-        }
-
-        for (int i = 0; i < phrase.length(); ++i) {
-            if (toupper(phrase[i]) == toupper(letter[0])) {
-                ++guessed;
-            }
-        }
-
-        lastGuessed = letter[0];
-        lettersGuessed.push_back((char) toupper(letter[0]));
-
-        return guessed;
-
-    }
-
-    int guessVowel(ostream& outs, istream& ins) {
-        int guessed = 0;
-        string letter;
-        bool valid = false;
-
-        outs << "Guess a vowel: ";
-
-        getline(ins, letter);
-
-        while (!valid) {
-            if (letter == "") {
-                valid = false;
-                cout << "No input. Guess a vowel: ";
-                ins.clear();
-                getline(ins, letter);
-            }
-            else if (letter.length() != 1 || find(vowels.begin(), vowels.end(), toupper(letter[0])) == vowels.end()) {
-                valid = false;
-                cout << "That is not a vowel! Try again: ";
-                ins.clear();
-                getline(ins, letter);
-            }
-            else if (find(lettersGuessed.begin(), lettersGuessed.end(), toupper(letter[0])) != lettersGuessed.end()) {
-                valid = false;
-                cout << "You have already guessed that letter! Try again: ";
-                ins.clear();
-                getline(ins, letter);
-            }
-            else {
-                valid = true;
-            }
-
-        }
-
-        for (int i = 0; i < phrase.length(); ++i) {
-            if (toupper(phrase[i]) == toupper(letter[0])) {
-                guessed++;
-            }
-        }
-        lastGuessed = letter[0];
-        lettersGuessed.push_back((char) toupper(letter[0]));
-        return guessed;
-
-    }
+    // Setters
+    void setPhrase (string p);
+    void setCategory(string c);
 
     /**
-     * TODO:
-     * if not alpha, print normally
-     * get a lenght for seetw
+     * Table of options
+     * @param outs
      */
-    void printPhrase(ostream& outs) {
-        /*
-        outs << "<><><><><><><><><><><><><><><><><><><><><><><><><><><><><>" << endl;
-        outs << "<>                                                      <>" << endl;*/
-        outs << "            ";
-        bool guessed = false;
-        for (int i = 0; i < phrase.size(); ++i) {
-            for (int j = 0; j < lettersGuessed.size(); ++j) {
-                 if (toupper(phrase[i]) == toupper(lettersGuessed[j])) {
-                     guessed = true;
-                 }
-            }
-            if (guessed) {
-                outs << (char) toupper(phrase[i]) << " ";
-            }
-            else if (!isalpha(phrase[i])) {
-                outs << phrase[i] << " ";
-            }
-            else if (isspace(phrase[i])) {
-                outs << "   ";
-            }
-            else {
-                outs << "_ ";
-            }
-            guessed = false;
-        }
+    void printGameOptions(ostream& outs);
 
-        outs << endl;
-        outs << "            " << "<><><> " << category << " <><><>" << endl;
-        /*
-        outs << endl << "<>                                                      <>" << endl;
-        outs << "<><><><><><><><><><><><><><><><><><><><><><><><><><><><><>" << endl;*/
-    }
 
-    int spinWheel() {
-        int prizeIndex = rand() % wheel.size();
-        int prize = wheel[prizeIndex];
+    /**
+     * getOption() prompts user to choose a game option and validates their choice.
+     * The function returns the option once it is validated.
+     * @param outs
+     * @param ins
+     * @return option
+     */
+    char getOption(ostream& outs, istream& ins);
 
-        return prize;
-    }
+    /**
+    * Prints the options that are offered between rounds
+    * @param outs
+    */
+    void printRoundOptions(ostream& outs);
 
-    bool solvePuzzle(string guess) {
-        int flag = 0;
+    /**
+     * activePlayer() checks if the player would like to continue a new round by prompting
+     * the user to spin the wheel or exit the game and validates their choice.
+     * If the user chooses to spin, the function returns true.
+     * If the user chooses to exit, the function returns false.
+     * @param outs
+     * @param ins
+     * @return boolean value true or false
+     */
+    bool activePlayer(ostream& outs, istream& ins);
 
-        for (int i = 0; i < phrase.size(); ++i) {
-            if (toupper(phrase[i]) == toupper(guess[i])) {
-                ++flag;
-            }
-        }
+    /**
+     * readFile() reads through a given file and passes values to vectors
+     * representing phrases and categories. The function returns true
+     * if the file is successfully opened and read.
+     * @param filename
+     * @return boolean value
+     */
+    bool readFile(string filename);
 
-        if (flag == phrase.size()) {
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-    bool guessedPhrase() {
-        int flag = 0;
-        for (int i = 0; i < phrase.length(); ++i) {
-            for (int j = 0; j < lettersGuessed.size(); ++j) {
-                if (toupper(phrase[i]) == toupper(lettersGuessed[j])) {
-                    ++flag;
-                }
-            }
-        }
+    /**
+     * setRandom() sets the phrase and category variables to a random
+     * value from their respective vectors.
+     *
+     * @param categories
+     * @param phrases
+     */
+    void setRandom();
 
-        if (flag == phrase.length()) {
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-    char getLastGuessed() {
-        return (char) toupper(lastGuessed);
-    }
-    bool playAgain(ostream& outs, istream& ins) {
-        string ans;
-        outs << "Play again? (y/n) ";
-        getline(ins, ans);
+    /**
+     * guessConsonant() prompts a user to guess a consonant and validates their response.
+     * If validated, the consonant will be searched for in the phrase. The function will
+     * return the amount of that specific consonant found in the phrase.
+     * @param outs
+     * @param ins
+     * @return guessed // The number of consonants correctly guessed
+     */
+    int guessConsonant(ostream& outs, istream& ins);
 
-        while (ans.length() != 1 || toupper(ans[0]) != 'Y' && toupper(ans[0]) != 'N') {
-            outs << "Invalid input. Please type y or n: " << endl;
-            ins.clear();
-            getline(ins, ans);
-        }
+    /**
+     * guessVowel() prompts a user to guess a vowel and validates their response.
+     * If validated, the vowel will be searched for in the phrase. The function will
+     * return the amount of that specific vowel found in the phrase.
+     * @param outs
+     * @param ins
+     * @return guessed // The number of correctly guessed vowels
+     */
+    int guessVowel(ostream& outs, istream& ins);
 
-        if (toupper(ans[0]) == 'Y') {
-            lettersGuessed = {};
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-    int getNumVowels() {
-        int numVowels = 0;
-        phrase = "Heapalo"; // 3
-        for (int i = 0; i < phrase.length(); ++i) {
-            for (int j = 0; j < vowels.size(); ++j) {
-                if (phrase[i] == vowels[j]) {
-                    ++numVowels;
-                }
-            }
-        }
-        return numVowels;
-    }
+
+    /**
+     * printPhrase() prints a formatted version of the given phrase. The function will only
+     * print the letters that the user has correctly guessed. If a letter has not yet been
+     * guessed, the function will print an underscore. Punctuation is printed normally.
+     * @param outs
+     */
+    void printPhrase(ostream& outs);
+
+    /**
+     * spinWheel() chooses a random value from the prizes vector and
+     * returns that value.
+     * @return prize
+     */
+    int spinWheel();
+
+    /**
+     * solvePuzzle takes in a string and compares it with the current phrase.
+     * If the string matches the phrase, the function returns true. Otherwise,
+     * the function returns false.
+     * @param guess
+     * @return boolean value
+     */
+    bool solvePuzzle(string guess);
+
+    bool guessedPhrase();
+
+    /**
+     * playAgain() asks the user if they wish to play again and validates the input.
+     * If the user chooses to play again, the function returns true.
+     * @param outs
+     * @param ins
+     * @return boolean value
+     */
+    bool playAgain(ostream& outs, istream& ins);
 
 };
 
