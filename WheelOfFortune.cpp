@@ -160,6 +160,7 @@ bool WheelOfFortune::readFile(string filename) {
         else {
             getline(inFile, phrase, '\n');
         }
+
         categories.push_back(category);
         phrases.push_back(phrase);
     }
@@ -267,10 +268,12 @@ int WheelOfFortune::guessVowel(ostream& outs, istream& ins) {
 }
 
 void WheelOfFortune::printPhrase(ostream& outs) {
+    int length = 0;
     /*
     outs << "<><><><><><><><><><><><><><><><><><><><><><><><><><><><><>" << endl;
     outs << "<>                                                      <>" << endl;*/
-    outs << "            ";
+    //outs << "            ";
+    //outs << setw(53) << left;
     bool guessed = false;
     for (int i = 0; i < phrase.size(); ++i) {
         for (int j = 0; j < lettersGuessed.size(); ++j) {
@@ -291,13 +294,35 @@ void WheelOfFortune::printPhrase(ostream& outs) {
             outs << "_ ";
         }
         guessed = false;
+        ++length;
     }
 
     outs << endl;
-    outs << "            " << "<><><> " << category << " <><><>" << endl;
+    outs  << "<><><> " << category << " <><><>" << endl;
+    printLettersGuessed(outs);
     /*
     outs << endl << "<>                                                      <>" << endl;
     outs << "<><><><><><><><><><><><><><><><><><><><><><><><><><><><><>" << endl;*/
+}
+
+void WheelOfFortune::printLettersGuessed(ostream& outs) {
+    // Print ascii values of 65-90
+    outs << endl;
+    outs << "            --------------------------" << endl;
+    outs << "            ";
+    for (int alpha = 65; alpha <= 90; ++alpha) {
+        if (find(lettersGuessed.begin(), lettersGuessed.end(), alpha) != lettersGuessed.end()) {
+            outs << ":: ";
+        }
+        else {
+            outs << char(alpha) << " ";
+        }
+        if (alpha == 77) {
+            outs << endl << "            ";
+        }
+    }
+    outs << endl << "            --------------------------";
+    outs << endl;
 }
 
 int WheelOfFortune::spinWheel() {

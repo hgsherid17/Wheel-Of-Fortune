@@ -14,6 +14,15 @@ using namespace std;
  * Main uses the WheelOfFortune class to build a user interface for the Wheel of Fortune game.
  * It stores the user's balance and current prize.
  * */
+
+/**
+ * TODO: "Help" option to print game rules and/or give the user a suggestion on what to do/guess
+ * ex: you have 4 vowels left, why not try guessing a vowel?
+ * TODO: Play with a second user
+ * TODO: Do not allow user to guess vowel if all possible vowels have been guessed
+ *
+ *
+ */
  int main() {
      // Variables
      int balance = 0;
@@ -24,6 +33,7 @@ using namespace std;
      int vowels;
      char option = 'C';
      int prize;
+     int vowelsGuessed = 0;
 
      // Create object and get puzzle from file
      WheelOfFortune player;
@@ -33,7 +43,6 @@ using namespace std;
      // Game home screen
      cout << "Welcome to Wheel of Fortune!" << endl;
      player.printPhrase(cout);
-     cout << player.getPhrase() << endl;
 
      // Prompt user to spin wheel
      playing = player.activePlayer(cout, cin);
@@ -78,7 +87,6 @@ using namespace std;
          // If user guesses a consonant correctly, allow them more game options
          while (round) {
              option = player.getOption(cout, cin);
-
              switch(option) {
 
                  // User chose to guess a consonant
@@ -95,6 +103,7 @@ using namespace std;
                          balance -= 250;
 
                          // Prompt user to guess a vowel
+                         ++vowelsGuessed;
                          vowels = player.guessVowel(cout, cin);
                          player.printPhrase(cout);
 

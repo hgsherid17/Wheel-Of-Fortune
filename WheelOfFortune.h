@@ -40,6 +40,7 @@ private:
     const vector<char> vowels = {'A', 'E', 'I', 'O', 'U'};
 
 
+
 public:
     /**
      * Default constructor initializes fields
@@ -137,6 +138,8 @@ public:
      * @param outs
      */
     void printPhrase(ostream& outs);
+
+    void printLettersGuessed(ostream& outs);
 
     /**
      * spinWheel() chooses a random value from the prizes vector and
