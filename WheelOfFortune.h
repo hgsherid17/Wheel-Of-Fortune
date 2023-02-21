@@ -143,7 +143,7 @@ public:
 
     /**
      * spinWheel() chooses a random value from the prizes vector and
-     * returns that value.
+     * retur ns that value.
      * @return prize
      */
     int spinWheel();
