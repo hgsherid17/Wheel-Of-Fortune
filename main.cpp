@@ -21,19 +21,22 @@ using namespace std;
  * TODO: Play with a second user
  * TODO: Do not allow user to guess vowel if all possible vowels have been guessed
  *
+ * TODO: Put input validation from guessVowel and guessConsonant and pass in user's guess instead of passing istream
+ * TODO: Make lettersGuessed a main variable and not class field
+ *
  *
  */
  int main() {
      // Variables
      int balance = 0;
      bool solved = false;
-     bool playing;
-     bool round;
-     int consonants;
-     int vowels;
+     bool playing, round;
+     int consonants, vowels;
      char option = 'C';
      int prize;
      int vowelsGuessed = 0;
+     string letter;
+
 
      // Create object and get puzzle from file
      WheelOfFortune player;

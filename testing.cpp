@@ -5,7 +5,7 @@
 bool testWheelOfFortune();
 
 int main() {
-    
+
     return 0;
 }
 

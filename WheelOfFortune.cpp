@@ -178,8 +178,9 @@ void WheelOfFortune::setRandom() {
 
 int WheelOfFortune::guessConsonant(ostream& outs, istream& ins) {
     int guessed = 0;
-    string letter;
     bool valid = false;
+
+    string letter;
 
     outs << "Guess a consonant: ";
     getline(ins, letter);
@@ -187,18 +188,21 @@ int WheelOfFortune::guessConsonant(ostream& outs, istream& ins) {
     while (!valid) {
         if (letter == "") {
             valid = false;
+
             outs << "No input. Guess a consonant: ";
             ins.clear();
             getline(ins, letter);
         }
         else if (letter.length() != 1 || !isalpha(letter[0]) || find(vowels.begin(), vowels.end(), toupper(letter[0])) != vowels.end()){
             valid = false;
+
             outs << "That is not a consonant! Try again: ";
             ins.clear();
             getline(ins, letter);
         }
         else if (find(lettersGuessed.begin(), lettersGuessed.end(), toupper(letter[0])) != lettersGuessed.end()) {
             valid = false;
+
             outs << "You have already guessed that letter!";
             outs << " Try again: ";
             ins.clear();
@@ -219,6 +223,7 @@ int WheelOfFortune::guessConsonant(ostream& outs, istream& ins) {
     lettersGuessed.push_back((char) toupper(letter[0]));
 
     return guessed;
+
 
 }
 
