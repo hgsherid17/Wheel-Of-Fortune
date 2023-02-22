@@ -32,6 +32,9 @@ public:
     void setNumWins(int wins);
     void setCurrentPrize(int wedge);
 
+    /******
+     * TODO: WHEEL CLASS?
+     */
     /**
      * Fills the wheel vector with values between 200-2500
      * Decreased likelihood of getting a high number

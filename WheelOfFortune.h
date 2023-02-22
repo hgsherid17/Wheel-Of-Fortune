@@ -36,10 +36,7 @@ private:
     vector<string> categories, phrases;
     char lastGuessed;
 
-    const vector<int> wheel = {500, 550, 600, 650, 700, 800, 900, 2500, 500, 550, 600, 650, 700};
     const vector<char> vowels = {'A', 'E', 'I', 'O', 'U'};
-
-
 
 public:
     /**
@@ -64,7 +61,6 @@ public:
      * @param outs
      */
     void printGameOptions(ostream& outs);
-
 
     /**
      * getOption() prompts user to choose a game option and validates their choice.

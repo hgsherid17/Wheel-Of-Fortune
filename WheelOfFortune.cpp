@@ -2,6 +2,7 @@
 // Created by Hannah Sheridan on 2/5/23.
 //
 #include "WheelOfFortune.h"
+#include "Player.h"
 
 WheelOfFortune::WheelOfFortune() {
     phrase = "";
@@ -394,3 +395,7 @@ bool WheelOfFortune::playAgain(ostream& outs, istream& ins) {
         return false;
     }
 }
+
+/***
+ * SWITCH PLAYER FUNCTION
+ */

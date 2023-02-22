@@ -2,10 +2,12 @@
 // Created by Hannah Sheridan on 2/20/23.
 //
 #include "WheelOfFortune.h"
+#include "Player.h"
+#include <vector>
 bool testWheelOfFortune();
 
 int main() {
-
+    testWheelOfFortune();
     return 0;
 }
 
@@ -26,9 +28,7 @@ bool testWheelOfFortune() {
     }
 
 
-
-
-
+    Player player;
 
     return passed;
 }

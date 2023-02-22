@@ -39,21 +39,24 @@ vector<int> Player::getWheel() {
 }
 
 void Player::fillWheel() {
-    for (int i = 200; i <= 2500; i += 50) {
+    for (int i = 200; i <= 900; i += 50) {
         wheel.push_back(i);
-        for (int j = 200; j <= 300; j += 50) {
-            wheel.push_back(j);
-        }
-
     }
+
+    // Highest value prize, lose a turn, and bankrupt are less probable
+    wheel.push_back(2500);
+    wheel.push_back(0); // Bankrupt
+    wheel.push_back(-1); // Lose a turn
 }
 
 void Player::spinWheel() {
-    srand(time(NULL));
+    srand(time(nullptr));
 
-    int wedge = rand() % wheel.size();
-
-    setCurrentPrize(wedge);
+    vector<int> likelihood;
+    for (int l = 0; l < 23; l++) {
+        likelihood.push_back(0);
+    }
+    likelihood.push_back(1);
 
 }
 
