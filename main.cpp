@@ -25,6 +25,13 @@ using namespace std;
  * TODO: Make lettersGuessed a main variable and not class field
  *
  *
+ * Put prize in main or Player?
+ * If so put bankrupt in Player?
+ *
+ * LOSE A TURN IN MAIN OR WHEELOFFORTUNE CLASS??
+ *
+ *
+ *
  */
  int main() {
      // Variables

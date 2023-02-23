@@ -25,12 +25,14 @@ public:
     int getBalance();
     int getNumWins();
     int getCurrentPrize();
+    string getName();
     vector<int> getWheel();
 
     // Setters
     void setBalance(int bal);
     void setNumWins(int wins);
     void setCurrentPrize(int wedge);
+    void setName(string playerName);
 
     /******
      * TODO: WHEEL CLASS?
@@ -47,7 +49,7 @@ public:
      */
     void spinWheel();
 
-    int numGuessed();
+    void bankrupt();
     /*
      * Returns true if user has sufficient funds to buy a vowel
      */
