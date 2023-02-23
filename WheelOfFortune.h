@@ -15,10 +15,12 @@
 #include <algorithm>
 #include <cctype>
 #include <iomanip>
+#include "Player.h"
 
 using namespace std;
 /**
  * The Wheel of Fortune class represents functions of the wheel of fortune game.
+ * It is also now a two-player game!
  * It has the following fields:
  * phrase: the current puzzle to be guessed by the user
  * category: the topic of the given puzzle
@@ -35,9 +37,9 @@ private:
     vector<char> lettersGuessed;
     vector<string> categories, phrases;
     char lastGuessed;
-
+    vector<Player> players;
+    int currentPlayer;
     const vector<char> vowels = {'A', 'E', 'I', 'O', 'U'};
-
 public:
     /**
      * Default constructor initializes fields
@@ -51,10 +53,12 @@ public:
     vector<char> getLettersGuessed();
     vector<string> getPhrases();
     vector<string> getCategories();
+    vector<Player> getPlayers();
 
     // Setters
     void setPhrase (string p);
     void setCategory(string c);
+    void setPlayers(Player player1, Player player2);
 
     /**
      * Table of options
@@ -163,6 +167,14 @@ public:
      * @return boolean value
      */
     bool playAgain(ostream& outs, istream& ins);
+
+    void switchPlayers();
+
+    Player getCurrentPlayer();
+
+
+
+
 
 };
 

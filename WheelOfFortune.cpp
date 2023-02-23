@@ -10,7 +10,15 @@ WheelOfFortune::WheelOfFortune() {
     lettersGuessed = {};
     categories = {};
     phrases = {};
+
+    // Fill players vector
+    currentPlayer = 0;
+    Player player1("Player 1");
+    Player player2("Player 2");
+    setPlayers(player1, player2);
+
     srand(time(NULL));
+
 }
 
 string WheelOfFortune::getPhrase() {
@@ -37,12 +45,21 @@ vector<string> WheelOfFortune::getCategories(){
     return this->categories;
 }
 
+vector<Player> WheelOfFortune::getPlayers() {
+    return this->players;
+}
+
 void WheelOfFortune::setPhrase (string p) {
     this->phrase = p;
 }
 
 void WheelOfFortune::setCategory(string c) {
     this->category = c;
+}
+
+void WheelOfFortune::setPlayers(Player player1, Player player2) {
+    players.push_back(player1);
+    players.push_back(player2);
 }
 
 void WheelOfFortune::printGameOptions(ostream& outs) {
@@ -330,14 +347,14 @@ void WheelOfFortune::printLettersGuessed(ostream& outs) {
     outs << endl << "            --------------------------";
     outs << endl;
 }
-
+/*
 int WheelOfFortune::spinWheel() {
     int prizeIndex = rand() % wheel.size();
     int prize = wheel[prizeIndex];
 
     return prize;
 }
-
+*/
 bool WheelOfFortune::solvePuzzle(string guess) {
     int flag = 0;
 
@@ -396,6 +413,20 @@ bool WheelOfFortune::playAgain(ostream& outs, istream& ins) {
     }
 }
 
-/***
- * SWITCH PLAYER FUNCTION
- */
+void WheelOfFortune::switchPlayers() {
+    if (currentPlayer == 0) {
+        ++currentPlayer;
+    }
+    else if (currentPlayer == 1){
+        --currentPlayer;
+    }
+    else {
+        currentPlayer = 0;
+    }
+
+}
+
+Player WheelOfFortune::getCurrentPlayer() {
+    return players[currentPlayer];
+}
+
