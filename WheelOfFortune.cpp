@@ -442,7 +442,7 @@ void WheelOfFortune::setCurrentPlayerBalance(int bal) {
 }
 
 void WheelOfFortune::printCurrentPlayerBalance(ostream& outs) {
-    outs << players[currentPlayer].getName() << "'s Balance: " << players[currentPlayer].getBalance() << endl;
+    outs << players[currentPlayer].getName() << "'s Balance: $" << players[currentPlayer].getBalance() << endl;
 }
 
 void WheelOfFortune::setPlayerNames(string player1, string player2) {
@@ -467,7 +467,10 @@ void WheelOfFortune::printCurrentPlayer(ostream& outs) {
     outs << "Current Player: " << players[currentPlayer] << endl;
 }
 
-void WheelOfFortune::spinWheel() {
-    int wedge = wheel.spinWheel();
+int WheelOfFortune::spinWheel() {
+    int wedge = wheel.spin();
+    players[currentPlayer].setPrize(wedge);
+
+    return wedge;
 
 }

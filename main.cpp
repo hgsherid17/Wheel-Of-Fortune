@@ -34,7 +34,7 @@ using namespace std;
  */
  int main() {
      // Variables
-     int balance = 0;
+    // int balance = 0;
      bool solved = false;
      bool playing, round;
      int consonants, vowels;
@@ -69,6 +69,8 @@ using namespace std;
      playing = player.activePlayer(cout, cin);
 
      while(playing){
+         player.printCurrentPlayer(cout);
+
          // If user decides to spin the wheel, spin wheel and print prize
          cout << endl << "Spinning the wheel..." << endl;
 
@@ -76,12 +78,16 @@ using namespace std;
 
          player.printPhrase(cout);
          cout << endl << "Your prize: $" << prize << endl;
-         cout << "Balance: $" << balance << endl;
+         player.printCurrentPlayerBalance(cout);
 
          // Prompt user to guess a consonant
          consonants = player.guessConsonant(cout, cin);
          player.printPhrase(cout);
 
+         /****
+          * TODO: change so balance is updated within WheelOfFortune class and not main
+          * Instead of returning pass numGuessed and lastGuessed to Player class and update balance there
+          */
          // Display output and update balance based on number of consonants guessed
          if (consonants > 1) {
              cout << "There are " << consonants << " " << player.getLastGuessed() << "'s!" << endl;
@@ -146,6 +152,9 @@ using namespace std;
                          break;
                      }
                      // If insufficient funds, reprompt user to choose another option
+                     /**
+                      * TODO: While player.getCurrentPlayer().sufficientFunds();
+                      */
                      while (balance < 250) {
                          cout << "Sorry, you do not have enough money to buy a vowel!" << endl;
                          option = player.getOption(cout, cin);
@@ -194,10 +203,16 @@ using namespace std;
          }
          // If the player has solved the puzzle
          if (solved){
+             /**
+              * TODO: record which player guessed the puzzle and update numWins
+              */
              // Ask if they would like to play again
              option = 'C';
              playing = player.playAgain(cout, cin);
 
+             /**
+              * TODO: does Loser's balance go back to zero?
+              */
              // Get new phrase if user chooses to play again
              // Otherwise, leave program
              if (playing) {

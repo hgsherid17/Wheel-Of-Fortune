@@ -186,7 +186,7 @@ public:
     void setPlayerNames(string player1, string player2);
     void printCurrentPlayer(ostream& outs);
 
-    void spinWheel();
+    int spinWheel();
 
     //friend ostream& operator << (ostream& outs, Player& player);
 
