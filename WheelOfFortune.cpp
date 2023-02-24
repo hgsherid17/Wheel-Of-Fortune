@@ -466,3 +466,8 @@ void WheelOfFortune::setPlayerNames(string player1, string player2) {
 void WheelOfFortune::printCurrentPlayer(ostream& outs) {
     outs << "Current Player: " << players[currentPlayer] << endl;
 }
+
+void WheelOfFortune::spinWheel() {
+    int wedge = wheel.spinWheel();
+
+}

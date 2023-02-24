@@ -6,10 +6,12 @@ set(CMAKE_CXX_STANDARD 14)
 add_executable(M1OEP_Hgsherid
         main.cpp
         WheelOfFortune.cpp
-        Player.cpp)
+        Player.cpp
+        Wheel.cpp)
 
 add_executable(test
         testing.cpp
         WheelOfFortune.cpp
-        Player.cpp)
+        Player.cpp
+        Wheel.cpp)
 

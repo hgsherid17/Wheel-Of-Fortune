@@ -4,14 +4,14 @@
 using namespace std;
 
 Player::Player() {
-    fillWheel();
+    // fillWheel();
     balance = 0;
     name = "Current Player";
     prize = 200;
     numWins = 0;
 }
 Player::Player(string name) {
-    fillWheel();
+   // fillWheel();
     balance = 0;
     this->name = name;
     prize = 200;
@@ -46,7 +46,7 @@ void Player::setPrize(int wedge) {
 void Player::setName(string playerName) {
     name = playerName;
 }
-
+/*
 void Player::fillWheel() {
     for (int i = 200; i <= 700; i += 50) {
         wheel.push_back(i);
@@ -66,7 +66,7 @@ void Player::spinWheel() {
 
     prize = wheel[randIndex];
 
-}
+}*/
 
 void Player::bankrupt() {
     balance = 0;

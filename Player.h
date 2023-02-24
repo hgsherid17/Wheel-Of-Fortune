@@ -15,7 +15,7 @@ private:
     int numWins;
     int prize;
     string name;
-    vector<int> wheel;
+    //vector<int> wheel;
 
 public:
     Player();
@@ -26,7 +26,7 @@ public:
     int getNumWins();
     int getPrize();
     string getName();
-    vector<int> getWheel();
+    //vector<int> getWheel();
 
     // Setters
     void setBalance(int bal);
@@ -38,13 +38,13 @@ public:
      * Fills the wheel vector with values between 200-2500
      * Decreased likelihood of getting a high number
      */
-    void fillWheel();
+    //void fillWheel();
 
     /**
      * Randomly chooses an element from the wheel vector and sets the current
      * prize value to that element
      */
-    void spinWheel();
+    //void spinWheel();
 
     void bankrupt();
     /*

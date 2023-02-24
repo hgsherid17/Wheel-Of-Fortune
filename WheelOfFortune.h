@@ -16,6 +16,7 @@
 #include <cctype>
 #include <iomanip>
 #include "Player.h"
+#include "Wheel.h"
 
 using namespace std;
 /**
@@ -37,6 +38,7 @@ private:
     vector<char> lettersGuessed;
     vector<string> categories, phrases;
     char lastGuessed;
+    Wheel wheel;
     vector<Player> players;
     int currentPlayer;
     const vector<char> vowels = {'A', 'E', 'I', 'O', 'U'};
@@ -184,9 +186,9 @@ public:
     void setPlayerNames(string player1, string player2);
     void printCurrentPlayer(ostream& outs);
 
-    friend ostream& operator << (ostream& outs, Player& player);
+    void spinWheel();
 
-    virtual int spinWheel();
+    //friend ostream& operator << (ostream& outs, Player& player);
 
 
 
