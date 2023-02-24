@@ -30,9 +30,10 @@ int Player::getPrize() {
 string Player::getName() {
     return this->name;
 }
+/*
 vector<int> Player::getWheel() {
     return this->wheel;
-}
+}*/
 
 void Player::setBalance(int bal) {
    balance = bal;

@@ -18,8 +18,15 @@ private:
 public:
 
     Wheel();
-    void fillWheel();
+    Wheel(vector<int> wheel);
 
+    vector<int> getWheel();
+    int getCurrentWedge();
+
+    bool addWedge(int wedge);
+    bool removeWedge(int wedge);
+
+    void fillWheel();
     int spin();
 
     friend ostream& operator << (ostream& outs, Wheel& rhs);
