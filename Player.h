@@ -24,19 +24,16 @@ public:
     // Getters
     int getBalance();
     int getNumWins();
-    int getCurrentPrize();
+    int getPrize();
     string getName();
     vector<int> getWheel();
 
     // Setters
     void setBalance(int bal);
     void setNumWins(int wins);
-    void setCurrentPrize(int wedge);
+    void setPrize(int wedge);
     void setName(string playerName);
 
-    /******
-     * TODO: WHEEL CLASS?
-     */
     /**
      * Fills the wheel vector with values between 200-2500
      * Decreased likelihood of getting a high number
@@ -54,6 +51,10 @@ public:
      * Returns true if user has sufficient funds to buy a vowel
      */
     bool sufficientFunds();
+
+    friend bool operator == (Player &lhs, Player &rhs);
+
+    friend ostream& operator << (ostream& outs, Player& rhs);
 
 };
 

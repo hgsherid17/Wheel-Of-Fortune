@@ -423,11 +423,46 @@ void WheelOfFortune::switchPlayers() {
     else {
         currentPlayer = 0;
     }
-
 }
+/*
+void WheelOfFortune::setCurrentPlayer(Player player) {
+    for (int i = 0; i < players.size(); ++i) {
+        if (player == players[i]) {
+            currentPlayer = i;
+        }
+    }
+}*/
 
 Player WheelOfFortune::getCurrentPlayer() {
     return players[currentPlayer];
 }
 
+void WheelOfFortune::setCurrentPlayerBalance(int bal) {
+    players[currentPlayer].setBalance(bal);
+}
 
+void WheelOfFortune::printCurrentPlayerBalance(ostream& outs) {
+    outs << players[currentPlayer].getName() << "'s Balance: " << players[currentPlayer].getBalance() << endl;
+}
+
+void WheelOfFortune::setPlayerNames(string player1, string player2) {
+    // If no input, set to default name
+    if (player1 == "" && player2 == "") {
+        player1 = "Player 1";
+        player2 = "Player 2";
+    }
+    else if (player1 == "") {
+        player1 = "Player 1";
+    }
+    else if (player2 == "") {
+        player2 = "Player 2";
+    }
+    players[0].setName(player1);
+    players[1].setName(player2);
+
+
+}
+
+void WheelOfFortune::printCurrentPlayer(ostream& outs) {
+    outs << "Current Player: " << players[currentPlayer] << endl;
+}

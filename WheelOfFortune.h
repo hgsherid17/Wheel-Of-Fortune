@@ -146,7 +146,7 @@ public:
      * retur ns that value.
      * @return prize
      */
-    int spinWheel();
+    //int spinWheel();
 
     /**
      * solvePuzzle takes in a string and compares it with the current phrase.
@@ -168,11 +168,25 @@ public:
      */
     bool playAgain(ostream& outs, istream& ins);
 
+    /**
+     * switchPlayers() switches the current player and spins the wheel to set a new prize value
+     */
     void switchPlayers();
+
+   // void setCurrentPlayer(Player player);
 
     Player getCurrentPlayer();
 
+    void setCurrentPlayerBalance(int bal);
 
+    void printCurrentPlayerBalance(ostream& outs);
+
+    void setPlayerNames(string player1, string player2);
+    void printCurrentPlayer(ostream& outs);
+
+    friend ostream& operator << (ostream& outs, Player& player);
+
+    virtual int spinWheel();
 
 
 

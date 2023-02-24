@@ -16,8 +16,7 @@ using namespace std;
  * */
 
 /**
- * TODO: "Help" option to print game rules and/or give the user a suggestion on what to do/guess
- * ex: you have 4 vowels left, why not try guessing a vowel?
+ *
  * TODO: Play with a second user
  * TODO: Do not allow user to guess vowel if all possible vowels have been guessed
  *
@@ -49,9 +48,21 @@ using namespace std;
      WheelOfFortune player;
      player.readFile("../WOFPhrases.csv");
      player.setRandom();
+     string player1;
+     string player2;
 
-     // Game home screen
+     // Welcome message
      cout << "Welcome to Wheel of Fortune!" << endl;
+
+     // Get and set player names
+     cout << "Please enter the name of Player 1: ";
+     getline(cin, player1);
+     cout << "Please enter the name of Player 2: ";
+     getline(cin, player2);
+     player.setPlayerNames(player1, player2);
+
+     // Print game puzzle and start Player 1's turn
+     player.printCurrentPlayer(cout);
      player.printPhrase(cout);
 
      // Prompt user to spin wheel
@@ -60,7 +71,9 @@ using namespace std;
      while(playing){
          // If user decides to spin the wheel, spin wheel and print prize
          cout << endl << "Spinning the wheel..." << endl;
+
          prize = player.spinWheel();
+
          player.printPhrase(cout);
          cout << endl << "Your prize: $" << prize << endl;
          cout << "Balance: $" << balance << endl;
