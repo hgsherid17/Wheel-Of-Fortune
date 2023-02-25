@@ -78,8 +78,19 @@ int Wheel::spin() {
 }
 
 ostream& operator << (ostream& outs, Wheel& rhs) {
+    int lastWedge;
     for (int i = 0; i < rhs.getSize(); ++i) {
-        outs << rhs.getWheel()[i] << "  ";
+        if (rhs.getWheel()[i] == lastWedge) {
+            outs << "";
+        }
+        else if (rhs.getWheel()[i] == 0) {
+            outs << "Bankrupt   ";
+        }
+        else {
+            outs << rhs.getWheel()[i] << "   ";
+        }
+
+        lastWedge = rhs.getWheel()[i];
     }
     outs << endl;
 

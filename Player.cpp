@@ -100,13 +100,18 @@ bool operator == (Player &lhs, Player &rhs) {
 }
 
 ostream& operator << (ostream& outs, Player& rhs) {
+    char lastChar;
     for (int i = 0; i < rhs.getName().length(); ++i) {
         if (i == 0) {
+            outs << (char) toupper(rhs.getName()[i]);
+        }
+        else if (lastChar == ' ') {
             outs << (char) toupper(rhs.getName()[i]);
         }
         else {
             outs << (char) tolower(rhs.getName()[i]);
         }
+        lastChar = rhs.getName()[i];
     }
     return outs;
 }
