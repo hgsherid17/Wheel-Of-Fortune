@@ -17,7 +17,8 @@ using namespace std;
 
 /**
  *
- * TODO: Play with a second user
+ * TODO: Keep score!
+ *
  * TODO: Do not allow user to guess vowel if all possible vowels have been guessed
  *
  * TODO: Put input validation from guessVowel and guessConsonant and pass in user's guess instead of passing istream
@@ -84,26 +85,23 @@ using namespace std;
          consonants = player.guessConsonant(cout, cin);
          player.printPhrase(cout);
 
-         /****
-          * TODO: change so balance is updated within WheelOfFortune class and not main
-          * Instead of returning pass numGuessed and lastGuessed to Player class and update balance there
-          */
          // Display output and update balance based on number of consonants guessed
          if (consonants > 1) {
              cout << "There are " << consonants << " " << player.getLastGuessed() << "'s!" << endl;
-             balance += (consonants * prize);
-             cout << "Balance: $" << balance << endl;
+             //balance += (consonants * prize);
+             player.printCurrentPlayerBalance(cout);
              round = true;
          }
          else if (consonants == 1) {
              cout << "There is " << consonants << " " << player.getLastGuessed() << "!" << endl;
-             balance += prize;
-             cout << "Balance: $" << balance << endl;
+             //balance += prize;
+             player.printCurrentPlayerBalance(cout);
              round = true;
          }
          else {
              cout << "Sorry, there are no " << player.getLastGuessed() << "'s in this puzzle!" << endl;
-             cout << "Balance: $" << balance << endl;
+            // cout << "Balance: $" << balance << endl;
+             player.printCurrentPlayerBalance(cout);
              round = false;
          }
 
@@ -127,6 +125,23 @@ using namespace std;
 
                  // User chose to buy a vowel
                  case 'V': {
+                     // Prompt user to guess a vowel
+                     vowels = player.guessVowel(cout, cin);
+                     player.printPhrase(cout);
+
+                     if (vowels > 1) {
+                         cout << "There are " << vowels << " " << player.getLastGuessed() << "'s!" << endl;
+                     }
+                     else if (vowels == 1) {
+                         cout << "There is " << vowels << " " << player.getLastGuessed() << "!" << endl;
+
+                     }
+                     else {
+                         cout << "Sorry, there are no " << player.getLastGuessed() << "'s in this puzzle!" << endl;
+                         round = false;
+                     }
+                     player.printCurrentPlayerBalance(cout);
+                     /*
                      // Ensure user has sufficient funds
                      if (balance > 250) {
                          balance -= 250;
@@ -150,16 +165,17 @@ using namespace std;
                          }
                          cout << "Balance: $" << balance << endl;
                          break;
-                     }
+                     }*/
                      // If insufficient funds, reprompt user to choose another option
                      /**
                       * TODO: While player.getCurrentPlayer().sufficientFunds();
                       */
+                      /*
                      while (balance < 250) {
                          cout << "Sorry, you do not have enough money to buy a vowel!" << endl;
                          option = player.getOption(cout, cin);
                          break;
-                     }
+                     }*/
                      break;
                  }
                  // User chose to solve the puzzle
@@ -226,13 +242,15 @@ using namespace std;
 
          // If user guesses incorrectly, start a new round
          if (option != 'C' || consonants == 0) {
+             player.switchPlayers();
+             player.printCurrentPlayer(cout);
              playing = player.activePlayer(cout, cin);
          }
 
      }
      // Goodbye message for end of game
      cout << "Thank you for playing! See you later :)" << endl;
-     cout << "Final balance: $" << balance << endl;
+     player.printFinalStats(cout);
 
      return 0;
  }
