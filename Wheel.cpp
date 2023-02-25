@@ -11,6 +11,7 @@ Wheel::Wheel() {
 }
 Wheel::Wheel(vector<int> wheel) {
     this->wheel = wheel;
+    size = wheel.size();
     wedge = wheel[0];
 }
 
@@ -21,6 +22,10 @@ int Wheel::getCurrentWedge() {
     return this->wedge;
 }
 
+int Wheel::getSize() {
+    return this->size;
+}
+
 bool Wheel::addWedge(int wedge) {
     if (find(wheel.begin(), wheel.end(), wedge) != wheel.end()) {
         // Wedge is already in wheel
@@ -29,6 +34,7 @@ bool Wheel::addWedge(int wedge) {
     else {
         wheel.push_back(wedge);
         this->wedge = wedge;
+        ++size;
         return true;
     }
 }
@@ -37,6 +43,7 @@ bool Wheel::removeWedge(int wedge) {
         for (int i = 0; i < wheel.size(); ++i) {
             if (wheel[i] == wedge) {
                 wheel.erase(wheel.begin() + i);
+                --size;
             }
         }
         return true;
@@ -47,16 +54,18 @@ bool Wheel::removeWedge(int wedge) {
     }
 }
 void Wheel::fillWheel() {
+    size = 0;
     for (int i = 200; i <= 700; i += 50) {
         wheel.push_back(i);
         wheel.push_back(i);
+        size += 2;
     }
 
     // Highest value prize, lose a turn, and bankrupt are less probable
     wheel.push_back(1000);
     wheel.push_back(2500);
     wheel.push_back(0); // Bankruptwheel.push_back(-1); // Lose a turn
-
+    size += 3;
 }
 int Wheel::spin() {
     srand(time(nullptr));
@@ -67,7 +76,12 @@ int Wheel::spin() {
     return wedge;
 
 }
-/*
+
 ostream& operator << (ostream& outs, Wheel& rhs) {
-    for (int i = 0; i < wheel.size(); ++i)
-}*/
+    for (int i = 0; i < rhs.getSize(); ++i) {
+        outs << rhs.getWheel()[i] << "  ";
+    }
+    outs << endl;
+
+    return outs;
+}

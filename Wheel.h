@@ -13,6 +13,7 @@ using namespace std;
 class Wheel {
 private:
     int wedge;
+    int size;
     vector<int> wheel;
 
 public:
@@ -20,8 +21,9 @@ public:
     Wheel();
     Wheel(vector<int> wheel);
 
-    vector<int> getWheel();
     int getCurrentWedge();
+    int getSize();
+    vector<int> getWheel();
 
     bool addWedge(int wedge);
     bool removeWedge(int wedge);
