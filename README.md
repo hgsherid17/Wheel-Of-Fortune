@@ -1,8 +1,9 @@
 # Hannah Sheridan - Open-Ended Project
-This program is a Wheel of Fortune game with one player. It has a WheelOfFortune class that holds functions of the game and validates almost all user input. Main represents the current user who is playing, storing variables like the user's balance and the current prize. The user is given a puzzle taken randomly from a file and is prompted to guess consonants and vowels. For every letter guessed, that letter will be printed to the console. The user can solve the puzzle or end the game at any time. 
+This program is a Wheel of Fortune game with two players. It has a WheelOfFortune class that holds functions of the game and validates almost all user input. The WheelOfFortune class "Has-A" Player and a Wheel. The component Player class holds fields and methods specific to each player, like balance and name. The Wheel class fills the wheel with different prizes and can spin the wheel. The players are given a puzzle taken randomly from a file and are prompted to guess consonants and vowels. For every letter guessed, that letter will be printed to the console. Whichever player solves the puzzle wins the game! 
 
-### Module 1 Concepts Used:
-* C++ Class
+### Module 2 Concepts Used:
+* C++ Component Class
+* C++ File Input
 
 ### Known Bugs:
 * Player can still guess a vowel after all vowels have been guessed
