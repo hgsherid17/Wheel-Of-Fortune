@@ -69,9 +69,19 @@ void Player::spinWheel() {
 
 }*/
 
+void Player::guessConsonant(int numGuessed) {
+    int prizeMoney = (prize * numGuessed);
+    balance += prizeMoney;
+}
+
+void Player::buyVowel() {
+    balance -= 250;
+}
+
 void Player::bankrupt() {
     balance = 0;
 }
+
 
 bool Player::sufficientFunds() {
     if (balance >= 250) {
@@ -90,5 +100,14 @@ bool operator == (Player &lhs, Player &rhs) {
 }
 
 ostream& operator << (ostream& outs, Player& rhs) {
-    outs << rhs.getName() << endl;
+    for (int i = 0; i < rhs.getName().length(); ++i) {
+        if (i == 0) {
+            outs << (char) toupper(rhs.getName()[i]);
+        }
+        else {
+            outs << (char) tolower(rhs.getName()[i]);
+        }
+    }
+    return outs;
 }
+

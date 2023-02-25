@@ -182,6 +182,7 @@ public:
     void setCurrentPlayerBalance(int bal);
 
     void printCurrentPlayerBalance(ostream& outs);
+    void printFinalStats(ostream& outs);
 
     void setPlayerNames(string player1, string player2);
     void printCurrentPlayer(ostream& outs);

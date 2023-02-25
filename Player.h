@@ -46,7 +46,18 @@ public:
      */
     //void spinWheel();
 
+    /*
+     * Takes in number of correctly guessed consonants and updates balance accordingly
+     */
+    void guessConsonant(int numGuessed);
+
+    /**
+     * Removes $250 from players balance
+     */
+    void buyVowel();
+
     void bankrupt();
+
     /*
      * Returns true if user has sufficient funds to buy a vowel
      */

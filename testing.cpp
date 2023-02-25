@@ -79,6 +79,9 @@ bool testWheel() {
         cout << "FAILED addWedge test case 2" << endl;
         passed = false;
     }
+    if (wheel2.getCurrentWedge() != 700) {
+        cout <<
+    }
     if (wheel2.addWedge(300)) {
         cout << "FAILED cannot add wedge test case" << endl;
         passed = false;
@@ -88,9 +91,6 @@ bool testWheel() {
         cout << "FAILED cannot remove wedge test case" << endl;
         passed = false;
     }
-    /**
-     * TODO: these methods should update current wedge
-     */
 
     wheel2.removeWedge(300);
     if (find(wheel2.getWheel().begin(), wheel2.getWheel().end(), 300) == wheel2.getWheel().end()) {

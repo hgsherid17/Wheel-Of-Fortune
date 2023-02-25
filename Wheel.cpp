@@ -28,6 +28,7 @@ bool Wheel::addWedge(int wedge) {
     }
     else {
         wheel.push_back(wedge);
+        this->wedge = wedge;
         return true;
     }
 }
