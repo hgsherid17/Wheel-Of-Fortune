@@ -184,7 +184,7 @@ public:
     void printCurrentPlayerBalance(ostream& outs);
     void printFinalStats(ostream& outs);
 
-    void setPlayerNames(string player1, string player2);
+    bool setPlayerNames(string player1, string player2);
     void printCurrentPlayer(ostream& outs);
 
     int spinWheel();

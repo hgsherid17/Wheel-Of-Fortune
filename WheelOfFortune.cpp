@@ -410,6 +410,7 @@ bool WheelOfFortune::solvePuzzle(string guess) {
     }
 
     if (flag == phrase.size()) {
+        players[currentPlayer].winner();
         return true;
     }
     else {
@@ -431,6 +432,7 @@ bool WheelOfFortune::guessedPhrase() {
     }
 
     if (flag == phrase.length()) {
+        players[currentPlayer].winner();
         return true;
     }
     else {
@@ -496,7 +498,7 @@ void WheelOfFortune::printFinalStats(ostream& outs) {
     outs << players[1] << "'s Wins: " << players[1].getNumWins() << endl;
     outs << players[1] << "'s Final Balance: $" << players[1].getBalance() << endl;
 }
-void WheelOfFortune::setPlayerNames(string player1, string player2) {
+bool WheelOfFortune::setPlayerNames(string player1, string player2) {
     // If no input, set to default name
     if (player1 == "" && player2 == "") {
         player1 = "Player 1";
@@ -508,9 +510,30 @@ void WheelOfFortune::setPlayerNames(string player1, string player2) {
     else if (player2 == "") {
         player2 = "Player 2";
     }
-    players[0].setName(player1);
-    players[1].setName(player2);
 
+    // If the names are the same, return false
+    // Only jump into loop if the strings are suspicious
+    if (player1.length() == player2.length()) {
+        int flag = 0;
+        for (int i = 0; i < player1.length(); ++i) {
+            if (toupper(player1[i]) == toupper(player2[i])) {
+                ++flag;
+            }
+        }
+
+        if (flag == player1.length()) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
+    else {
+        players[0].setName(player1);
+        players[1].setName(player2);
+        return true;
+    }
 }
 
 void WheelOfFortune::printCurrentPlayer(ostream& outs) {
@@ -519,7 +542,15 @@ void WheelOfFortune::printCurrentPlayer(ostream& outs) {
 
 int WheelOfFortune::spinWheel() {
     int wedge = wheel.spin();
-    players[currentPlayer].setPrize(wedge);
+    if (wedge == 0) {
+        players[currentPlayer].bankrupt();
+    }
+    else if (wedge == -1) {
+        switchPlayers();
+    }
+    else {
+        players[currentPlayer].setPrize(wedge);
+    }
 
     return wedge;
 
