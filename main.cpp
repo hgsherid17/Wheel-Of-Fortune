@@ -58,9 +58,15 @@ using namespace std;
      // Get and set player names
      cout << "Please enter the name of Player 1: ";
      getline(cin, player1);
+
      cout << "Please enter the name of Player 2: ";
      getline(cin, player2);
-     player.setPlayerNames(player1, player2);
+     bool diff = player.setPlayerNames(player1, player2);
+     while (!diff) {
+         cout << "You cannot have the same name as another player!" << endl << "Please enter another name: ";
+         getline(cin, player2);
+         diff = player.setPlayerNames(player1, player2);
+     }
 
      // Print game puzzle and start Player 1's turn
      player.printCurrentPlayer(cout);
@@ -76,6 +82,11 @@ using namespace std;
          cout << endl << "Spinning the wheel..." << endl;
 
          prize = player.spinWheel();
+         while (prize == -1) {
+             cout << "Sorry, " << player.getCurrentPlayer() << ", you lost a turn!" << endl;
+             cout << endl << "Spinning the wheel..." << endl;
+             prize = player.spinWheel();
+         }
 
          player.printPhrase(cout);
          cout << endl << "Your prize: $" << prize << endl;
@@ -106,7 +117,7 @@ using namespace std;
          }
 
          if (player.guessedPhrase()) {
-             cout << "Congratulations, you solved the puzzle!" << endl;
+             cout << "Congratulations, " << player.getCurrentPlayer() << ", you solved the puzzle!" << endl;
              solved = true;
              round = false;
              option = 'E';
@@ -115,7 +126,6 @@ using namespace std;
          while (round) {
              option = player.getOption(cout, cin);
              switch(option) {
-
                  // User chose to guess a consonant
                  case 'C': {
                      // Jump out of loop and spin the wheel again
@@ -192,13 +202,13 @@ using namespace std;
                      // Jump out of loop if user guesses correctly
                      if ((player.solvePuzzle(guess))) {
                          player.printPhrase(cout);
-                         cout << "Congratulations, you solved the puzzle!" << endl;
+                         cout << "Congratulations, " << player.getCurrentPlayer() << ", you solved the puzzle!" << endl;
                          round = false;
                          solved = true;
                      }
                      // Start another round if user guesses wrong
                      else {
-                         cout << "Sorry, you did not solve the puzzle. Guess more letters and try again!" << endl;
+                         cout << "Sorry, you did not solve the puzzle. Your turn has ended." << endl;
                          round = false;
                          break;
                      }
@@ -211,8 +221,9 @@ using namespace std;
                      option = 'C';
                  }
              }
+             // Worried. Will this mess up numWins ?
              if (player.guessedPhrase()) {
-                 cout << "Congratulations, you solved the puzzle!" << endl;
+                 cout << "Congratulations, " << player.getCurrentPlayer() << ", you solved the puzzle!" << endl;
                  solved = true;
              }
 
