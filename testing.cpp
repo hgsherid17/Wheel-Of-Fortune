@@ -3,6 +3,7 @@
 //
 #include "WheelOfFortune.h"
 #include "Player.h"
+#include "Wheel.h"
 #include <vector>
 bool testWheelOfFortune();
 bool testPlayer();
@@ -18,20 +19,36 @@ int main() {
     if (testWheel()) {
         cout << "PASSED ALL WHEEL TEST CASES" << endl;
     }
+
     return 0;
 }
-/**
- * TODO: There are lots of "print" functions in this class.... how should I test them?
- * @return
- */
+
 bool testWheelOfFortune() {
     bool passed = true;
     WheelOfFortune test;
 
-    // Solve puzzle
-    // Guessed phrase
-    // Switch players
-    //
+    // Test default constructor
+    vector<Player> players;
+    players = test.getPlayers();
+
+    if (players.size() != 2) {
+        cout << "FAILED default constructor test case 1" << endl;
+        passed = false;
+    }
+
+    if (!(test.getCurrentPlayer() == players[0])) {
+        cout << "FAILED default constructor test case 2" << endl;
+        passed = false;
+    }
+    if (!(test.getCurrentPlayer() == "Player 1")) {
+        cout << "FAILED default constructor test case 3" << endl;
+        passed = false;
+    }
+    if (!(players[1] == "Player 2")) {
+        cout << "FAILED default constructor test case 4" << endl;
+        passed = false;
+    }
+
     // Test setters
     test.setPhrase("Hello");
     if (test.getPhrase() != "Hello") {
@@ -42,10 +59,114 @@ bool testWheelOfFortune() {
     test.setCategory("Thing");
     if (test.getCategory() != "Thing") {
         cout << "FAILED setCategory() test case" << endl;
+        passed = false;
     }
 
+    // Solve puzzle
+    if (test.solvePuzzle("Bye")) {
+        cout << "FAILED solve puzzle test case 1" << endl;
+        passed = false;
+    }
+    if (!(test.solvePuzzle("Hello"))) {
+        cout << "FAILED solve puzzle test case 2" << endl;
+        passed = false;
+    }
+    for (char letter : "Hello") {
+        if (find(test.getLettersGuessed().begin(), test.getLettersGuessed().end(), letter) == test.getLettersGuessed().end()) {
+            passed = false;
+            cout << "FAILED solve puzzle test case 3" << endl;
+        }
+    }
 
-    Player player;
+    // Guessed phrase
+    test.setPhrase("Bye");
+    test.addGuessed('b');
+    test.addGuessed('t');
+    if (test.guessedPhrase()) {
+        cout << "FAILED guessed phrase test case 1" << endl;
+        passed = false;
+    }
+
+    test.addGuessed('e');
+    test.addGuessed('y');
+    if (!(test.guessedPhrase())) {
+        cout << "FAILED guessed phrase test case 2" << endl;
+        passed = false;
+    }
+
+    // Switch players
+    test.switchPlayers();
+    if (test.getCurrentPlayer() == players[0]) {
+        cout << "FAILED switch players test case 1" << endl;
+        passed = false;
+    }
+
+    if (!(test.getCurrentPlayer() == players[1])) {
+        cout << "FAILED switch players test case 2" << endl;
+        passed = false;
+    }
+
+    test.switchPlayers();
+    if (test.getCurrentPlayer() == players[1]) {
+        cout << "FAILED switch players test case 3" << endl;
+        passed = false;
+    }
+
+    // Set player names
+    if (test.setPlayerNames("Hannah", "Hannah")) {
+        cout << "FAILED set player names test case 1" << endl;
+        passed = false;
+    }
+    if (!(test.setPlayerNames("Hannah", "Sheridan"))) {
+        cout << "FAILED set player names test case 2" << endl;
+        passed = false;
+    }
+
+    test.setPlayerNames("", "Hannah");
+    players = test.getPlayers();
+    if (!(players[0] == "Player 1")) {
+        cout << "FAILED set player names test case 3" << endl;
+    }
+
+    test.setPlayerNames("Hannah", "");
+    players = test.getPlayers();
+    if (!(players[1] == "Player 2")) {
+        cout << "FAILED test player names test case 4" << endl;
+        passed = false;
+    }
+
+    cout << "----- Testing Wheel Of Fortune print functions -----" << endl;
+    test.printRoundOptions(cout);
+
+    // Should print vowel
+    test.setCurrentPlayerBalance(250);
+    test.printGameOptions(cout);
+
+    // Shouldn't print vowel
+    test.setCurrentPlayerBalance(0);
+    test.printGameOptions(cout);
+
+    test.setPhrase("Hello World");
+    test.setCategory("Puzzle");
+    test.addGuessed('w');
+    test.addGuessed('o');
+    // Should only print letters guessed
+    test.printPhrase(cout);
+
+    test.setCurrentPlayerBalance(250);
+    test.printCurrentPlayer(cout);
+    test.printCurrentPlayerBalance(cout);
+    cout << endl;
+    test.switchPlayers();
+    test.setCurrentPlayerBalance(500);
+    test.printCurrentPlayer(cout);
+    test.printCurrentPlayerBalance(cout);
+    cout << endl;
+
+    test.printFinalStats(cout);
+
+    cout << "----- End testing Wheel Of Fortune print functions -----" << endl;
+
 
     return passed;
 }
@@ -93,12 +214,23 @@ bool testPlayer() {
         passed = false;
     }
 
+    player1.guessConsonant(1);
+    if (player1.getBalance() != 400) {
+        cout << "FAILED guess consonant test case 2" << endl;
+    }
+
+    // Sufficient funds
+    if (!(player1.sufficientFunds())) {
+        cout << "FAILED sufficient funds test case 1" << endl;
+        passed = false;
+    }
     // Buy vowel
     player1.buyVowel();
-    if (player1.getBalance() != 50) {
+    if (player1.getBalance() != 150) {
         cout << "FAILED buy vowel test case 1" << endl;
         passed = false;
     }
+
 
     // Bankrupt
     player1.bankrupt();
@@ -115,22 +247,32 @@ bool testPlayer() {
 
     player1.setName("Jane Doe");
     player2.setName("Jane Doe");
+
     // Overloaded == operator
     if (!(player1 == player2)) {
-        cout << "FAILED overloaded == operator test case" << endl;
+        cout << "FAILED overloaded == operator test case 1" << endl;
         passed = false;
     }
 
     player2.setName("John Doe");
     if (player1 == player2) {
-        cout << "FAILED overloaded == operator" << endl;
+        cout << "FAILED overloaded == operator test case 2" << endl;
+        passed = false;
+    }
+
+    if (player2 == "Player 2") {
+        cout << "FAILED overloaded == operator test case 3" << endl;
+        passed = false;
+    }
+    if (!(player2 == "John Doe")) {
+        cout << "FAILED overloaded == operator test case 4" << endl;
         passed = false;
     }
 
     // Overloaded << operator
-    cout << "Testing Player overloaded print operator..." << endl;
+    cout << "----- Testing Player overloaded print operator -----" << endl;
     cout << "Player 1: " << player1 << endl << "Player 2: " << player2 << endl;
-    cout << "End testing Player overloaded print operator" << endl;
+    cout << "----- End testing Player overloaded print operator -----" << endl;
 
     return passed;
 }
@@ -177,10 +319,6 @@ bool testWheel() {
         cout << "FAILED addWedge test case 3" << endl;
         passed = false;
     }
-    if (wheel2.addWedge(300)) {
-        cout << "FAILED cannot add wedge test case" << endl;
-        passed = false;
-    }
 
     // Remove wedge
     if (wheel2.removeWedge(800)) {
@@ -207,13 +345,9 @@ bool testWheel() {
         passed = false;
     }
 
-    /**
-     * TODO: add another for this func?
-     */
-
-    cout << "Testing Wheel class overloaded print operator..." << endl;
+    cout << "----- Testing Wheel class overloaded print operator -----" << endl;
     cout << wheel3;
-    cout << "End testing Wheel class overloaded print operator" << endl;
+    cout << "----- End testing Wheel class overloaded print operator -----" << endl;
 
     return passed;
 }

@@ -53,8 +53,6 @@ public:
     string getCategory();
     char getLastGuessed();
     vector<char> getLettersGuessed();
-    vector<string> getPhrases();
-    vector<string> getCategories();
     vector<Player> getPlayers();
     Player getCurrentPlayer();
 
@@ -63,6 +61,9 @@ public:
     void setCategory(string c);
     void setPlayers(Player player1, Player player2);
     void setCurrentPlayer(int index);
+    void setCurrentPlayerBalance(int bal);
+
+    void addGuessed(char letter);
 
     /**
      * Table of options
@@ -146,13 +147,6 @@ public:
     void printLettersGuessed(ostream& outs);
 
     /**
-     * spinWheel() chooses a random value from the prizes vector and
-     * retur ns that value.
-     * @return prize
-     */
-    //int spinWheel();
-
-    /**
      * solvePuzzle takes in a string and compares it with the current phrase.
      * If the string matches the phrase, the function returns true. Otherwise,
      * the function returns false.
@@ -176,8 +170,6 @@ public:
      * switchPlayers() switches the current player and spins the wheel to set a new prize value
      */
     void switchPlayers();
-
-    void setCurrentPlayerBalance(int bal);
 
     void printCurrentPlayerBalance(ostream& outs);
     void printFinalStats(ostream& outs);
