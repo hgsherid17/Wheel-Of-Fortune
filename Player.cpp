@@ -27,13 +27,9 @@ int Player::getNumWins() {
 int Player::getPrize() {
     return this->prize;
 }
-string Player::getName() {
+string Player::getName() const {
     return this->name;
 }
-/*
-vector<int> Player::getWheel() {
-    return this->wheel;
-}*/
 
 void Player::setBalance(int bal) {
    balance = bal;
@@ -47,27 +43,6 @@ void Player::setPrize(int wedge) {
 void Player::setName(string playerName) {
     name = playerName;
 }
-/*
-void Player::fillWheel() {
-    for (int i = 200; i <= 700; i += 50) {
-        wheel.push_back(i);
-        wheel.push_back(i);
-    }
-
-    // Highest value prize, lose a turn, and bankrupt are less probable
-    wheel.push_back(1000);
-    wheel.push_back(2500);
-    wheel.push_back(0); // Bankrupt
-    wheel.push_back(-1); // Lose a turn
-}
-
-void Player::spinWheel() {
-    srand(time(nullptr));
-    int randIndex = rand() % wheel.size();
-
-    prize = wheel[randIndex];
-
-}*/
 
 void Player::guessConsonant(int numGuessed) {
     int prizeMoney = (prize * numGuessed);
@@ -96,13 +71,19 @@ bool Player::sufficientFunds() {
     }
 }
 
-bool operator == (Player &lhs, Player &rhs) {
+bool operator == (const Player &lhs, const Player &rhs) {
     if (lhs.getName() == rhs.getName()) {
         return true;
     }
     return false;
 }
 
+bool operator == (const Player &lhs, const string &rhs) {
+    if (lhs.getName() == rhs) {
+        return true;
+    }
+    return false;
+}
 ostream& operator << (ostream& outs, Player rhs) {
     char lastChar;
     for (int i = 0; i < rhs.getName().length(); ++i) {

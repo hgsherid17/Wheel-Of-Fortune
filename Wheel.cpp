@@ -81,6 +81,9 @@ ostream& operator << (ostream& outs, Wheel& rhs) {
         else if (rhs.getWheel()[i] == 0) {
             outs << "Bankrupt   ";
         }
+        else if (rhs.getWheel()[i] == -1) {
+            outs << "Lose a Turn   ";
+        }
         else {
             outs << rhs.getWheel()[i] << "   ";
         }

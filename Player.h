@@ -15,7 +15,6 @@ private:
     int numWins;
     int prize;
     string name;
-    //vector<int> wheel;
 
 public:
     Player();
@@ -25,26 +24,13 @@ public:
     int getBalance();
     int getNumWins();
     int getPrize();
-    string getName();
-    //vector<int> getWheel();
+    string getName() const;
 
     // Setters
     void setBalance(int bal);
     void setNumWins(int wins);
     void setPrize(int wedge);
     void setName(string playerName);
-
-    /**
-     * Fills the wheel vector with values between 200-2500
-     * Decreased likelihood of getting a high number
-     */
-    //void fillWheel();
-
-    /**
-     * Randomly chooses an element from the wheel vector and sets the current
-     * prize value to that element
-     */
-    //void spinWheel();
 
     /*
      * Takes in number of correctly guessed consonants and updates balance accordingly
@@ -56,8 +42,14 @@ public:
      */
     void buyVowel();
 
+    /**
+     * Sets players balance to zero
+     */
     void bankrupt();
 
+    /**
+     * increments numWins
+     */
     void winner();
 
     /*
@@ -65,8 +57,9 @@ public:
      */
     bool sufficientFunds();
 
-    friend bool operator == (Player &lhs, Player &rhs);
-
+    // Overloaded Operators
+    friend bool operator == (const Player &lhs, const Player &rhs);
+    friend bool operator == (const Player &lhs, const string &rhs);
     friend ostream& operator << (ostream& outs, Player rhs);
 
 };

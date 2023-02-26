@@ -38,19 +38,16 @@ vector<char> WheelOfFortune::getLettersGuessed() {
     return this->lettersGuessed;
 }
 
-vector<string> WheelOfFortune::getPhrases() {
-    return this->phrases;
-}
-
-vector<string> WheelOfFortune::getCategories(){
-    return this->categories;
-}
-
 vector<Player> WheelOfFortune::getPlayers() {
     return this->players;
 }
 
+Player WheelOfFortune::getCurrentPlayer() {
+    return players[currentPlayer];
+}
+
 void WheelOfFortune::setPhrase (string p) {
+    lettersGuessed.clear();
     this->phrase = p;
 }
 
@@ -59,11 +56,20 @@ void WheelOfFortune::setCategory(string c) {
 }
 
 void WheelOfFortune::setPlayers(Player player1, Player player2) {
+    players.clear();
     players.push_back(player1);
     players.push_back(player2);
 }
 void WheelOfFortune::setCurrentPlayer(int index) {
     this->currentPlayer = index;
+}
+
+void WheelOfFortune::setCurrentPlayerBalance(int bal) {
+    players[currentPlayer].setBalance(bal);
+}
+
+void WheelOfFortune::addGuessed(char letter) {
+    lettersGuessed.push_back(toupper(letter));
 }
 
 void WheelOfFortune::printGameOptions(ostream& outs) {
@@ -400,14 +406,7 @@ void WheelOfFortune::printLettersGuessed(ostream& outs) {
     outs << endl << "            --------------------------";
     outs << endl;
 }
-/*
-int WheelOfFortune::spinWheel() {
-    int prizeIndex = rand() % wheel.size();
-    int prize = wheel[prizeIndex];
 
-    return prize;
-}
-*/
 bool WheelOfFortune::solvePuzzle(string guess) {
     int flag = 0;
 
@@ -483,14 +482,6 @@ void WheelOfFortune::switchPlayers() {
     }
 }
 
-Player WheelOfFortune::getCurrentPlayer() {
-    return players[currentPlayer];
-}
-
-void WheelOfFortune::setCurrentPlayerBalance(int bal) {
-    players[currentPlayer].setBalance(bal);
-}
-
 void WheelOfFortune::printCurrentPlayerBalance(ostream& outs) {
     outs << players[currentPlayer] << "'s Balance: $" << players[currentPlayer].getBalance() << endl;
 }
@@ -523,7 +514,6 @@ bool WheelOfFortune::setPlayerNames(string player1, string player2) {
                 ++flag;
             }
         }
-
         if (flag == player1.length()) {
             return false;
         }
