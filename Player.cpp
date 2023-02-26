@@ -82,6 +82,10 @@ void Player::bankrupt() {
     balance = 0;
 }
 
+void Player::winner() {
+    ++numWins;
+}
+
 
 bool Player::sufficientFunds() {
     if (balance >= 250) {
@@ -99,7 +103,7 @@ bool operator == (Player &lhs, Player &rhs) {
     return false;
 }
 
-ostream& operator << (ostream& outs, Player& rhs) {
+ostream& operator << (ostream& outs, Player rhs) {
     char lastChar;
     for (int i = 0; i < rhs.getName().length(); ++i) {
         if (i == 0) {

@@ -58,6 +58,8 @@ public:
 
     void bankrupt();
 
+    void winner();
+
     /*
      * Returns true if user has sufficient funds to buy a vowel
      */
@@ -65,7 +67,7 @@ public:
 
     friend bool operator == (Player &lhs, Player &rhs);
 
-    friend ostream& operator << (ostream& outs, Player& rhs);
+    friend ostream& operator << (ostream& outs, Player rhs);
 
 };
 
