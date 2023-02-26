@@ -40,7 +40,7 @@ private:
     char lastGuessed;
     Wheel wheel;
     vector<Player> players;
-    int currentPlayer;
+    int currentPlayer, vowelsGuessed;
     const vector<char> vowels = {'A', 'E', 'I', 'O', 'U'};
 public:
     /**
@@ -56,11 +56,13 @@ public:
     vector<string> getPhrases();
     vector<string> getCategories();
     vector<Player> getPlayers();
+    Player getCurrentPlayer();
 
     // Setters
     void setPhrase (string p);
     void setCategory(string c);
     void setPlayers(Player player1, Player player2);
+    void setCurrentPlayer(int index);
 
     /**
      * Table of options
@@ -174,10 +176,6 @@ public:
      * switchPlayers() switches the current player and spins the wheel to set a new prize value
      */
     void switchPlayers();
-
-   // void setCurrentPlayer(Player player);
-
-    Player getCurrentPlayer();
 
     void setCurrentPlayerBalance(int bal);
 

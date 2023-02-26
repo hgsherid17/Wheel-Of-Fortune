@@ -17,7 +17,6 @@ using namespace std;
 
 /**
  *
- * TODO: Keep score!
  *
  * TODO: Do not allow user to guess vowel if all possible vowels have been guessed
  *
@@ -38,10 +37,8 @@ using namespace std;
     // int balance = 0;
      bool solved = false;
      bool playing, round;
-     int consonants, vowels;
+     int consonants, vowels, prize;
      char option = 'C';
-     int prize;
-     int vowelsGuessed = 0;
      string letter;
 
 
@@ -72,6 +69,11 @@ using namespace std;
      player.printCurrentPlayer(cout);
      player.printPhrase(cout);
 
+     /**
+      * TODO: get rid
+      */
+      cout << player.getPhrase() << endl;
+
      // Prompt user to spin wheel
      playing = player.activePlayer(cout, cin);
 
@@ -84,12 +86,15 @@ using namespace std;
          prize = player.spinWheel();
          while (prize == -1) {
              cout << "Sorry, " << player.getCurrentPlayer() << ", you lost a turn!" << endl;
+             player.switchPlayers();
+             player.printCurrentPlayer(cout);
              cout << endl << "Spinning the wheel..." << endl;
+             prize = 0;
              prize = player.spinWheel();
          }
 
          player.printPhrase(cout);
-         cout << endl << "Your prize: $" << prize << endl;
+         cout << endl << "Prize: $" << prize << endl;
          player.printCurrentPlayerBalance(cout);
 
          // Prompt user to guess a consonant
@@ -112,11 +117,11 @@ using namespace std;
          else {
              cout << "Sorry, there are no " << player.getLastGuessed() << "'s in this puzzle!" << endl;
             // cout << "Balance: $" << balance << endl;
-             player.printCurrentPlayerBalance(cout);
              round = false;
          }
 
          if (player.guessedPhrase()) {
+             player.printPhrase(cout);
              cout << "Congratulations, " << player.getCurrentPlayer() << ", you solved the puzzle!" << endl;
              solved = true;
              round = false;
@@ -144,48 +149,12 @@ using namespace std;
                      }
                      else if (vowels == 1) {
                          cout << "There is " << vowels << " " << player.getLastGuessed() << "!" << endl;
-
                      }
                      else {
                          cout << "Sorry, there are no " << player.getLastGuessed() << "'s in this puzzle!" << endl;
                          round = false;
                      }
                      player.printCurrentPlayerBalance(cout);
-                     /*
-                     // Ensure user has sufficient funds
-                     if (balance > 250) {
-                         balance -= 250;
-
-                         // Prompt user to guess a vowel
-                         ++vowelsGuessed;
-                         vowels = player.guessVowel(cout, cin);
-                         player.printPhrase(cout);
-
-                         // Display message based on number of vowels guessed
-                         if (vowels > 1) {
-                             cout << "There are " << vowels << " " << player.getLastGuessed() << "'s!" << endl;
-
-                         } else if (vowels == 1) {
-                             cout << "There is " << vowels << " " << player.getLastGuessed() << "! " << endl;
-
-                         } else {
-                             // If they guess wrong, restart round
-                             cout << "Sorry, there are no " << player.getLastGuessed() << "'s in this puzzle!" << endl;
-                             round = false;
-                         }
-                         cout << "Balance: $" << balance << endl;
-                         break;
-                     }*/
-                     // If insufficient funds, reprompt user to choose another option
-                     /**
-                      * TODO: While player.getCurrentPlayer().sufficientFunds();
-                      */
-                      /*
-                     while (balance < 250) {
-                         cout << "Sorry, you do not have enough money to buy a vowel!" << endl;
-                         option = player.getOption(cout, cin);
-                         break;
-                     }*/
                      break;
                  }
                  // User chose to solve the puzzle
@@ -223,6 +192,7 @@ using namespace std;
              }
              // Worried. Will this mess up numWins ?
              if (player.guessedPhrase()) {
+                 player.printPhrase(cout);
                  cout << "Congratulations, " << player.getCurrentPlayer() << ", you solved the puzzle!" << endl;
                  solved = true;
              }
@@ -230,21 +200,16 @@ using namespace std;
          }
          // If the player has solved the puzzle
          if (solved){
-             /**
-              * TODO: record which player guessed the puzzle and update numWins
-              */
              // Ask if they would like to play again
              option = 'C';
              playing = player.playAgain(cout, cin);
 
-             /**
-              * TODO: does Loser's balance go back to zero?
-              */
              // Get new phrase if user chooses to play again
              // Otherwise, leave program
              if (playing) {
                  solved = false;
                  player.setRandom();
+                 player.setCurrentPlayer(0);
              }
              else {
                  round = false;
@@ -265,8 +230,6 @@ using namespace std;
 
      return 0;
  }
-/// Wheel of Fortune: Phrases ///
-
 
 
 

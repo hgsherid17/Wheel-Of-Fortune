@@ -17,20 +17,42 @@ private:
     vector<int> wheel;
 
 public:
-
+    // Constructors
     Wheel();
     Wheel(vector<int> wheel);
 
+    // Getters
     int getCurrentWedge();
     int getSize();
     vector<int> getWheel();
 
-    bool addWedge(int wedge);
+    /**
+     * addWedge takes in an integer prize value and adds it to the wheel.
+     * @param wedge
+     */
+    void addWedge(int wedge);
+
+    /**
+     * removeWedge takes in an integer prize value. If the value is in the wheel, it is removed and the function
+     * returns true. Otherwise, it returns false.
+     * @param wedge
+     * @return true or false
+     */
     bool removeWedge(int wedge);
 
+    /**
+     * fillWheel fills the wheel with various prize values ranging from 200-2500. It also adds 0
+     * to represent the "Bankrupt" wedge, and -1 to represent "Lose a Turn"
+     */
     void fillWheel();
+
+    /**
+     * Returns a random value from the wheel
+     * @return
+     */
     int spin();
 
+    // Overloaded operator
     friend ostream& operator << (ostream& outs, Wheel& rhs);
 };
 #endif //M1OEP_HGSHERID_WHEEL_H

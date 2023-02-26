@@ -1,4 +1,4 @@
-//
+//p
 // Created by Hannah Sheridan on 2/24/23.
 //
 #include "Wheel.h"
@@ -26,20 +26,14 @@ int Wheel::getSize() {
     return this->size;
 }
 
-bool Wheel::addWedge(int wedge) {
-    if (find(wheel.begin(), wheel.end(), wedge) != wheel.end()) {
-        // Wedge is already in wheel
-        return false;
-    }
-    else {
-        wheel.push_back(wedge);
-        this->wedge = wedge;
-        ++size;
-        return true;
-    }
+void Wheel::addWedge(int wedge) {
+    wheel.push_back(wedge);
+    this->wedge = wedge;
+    ++size;
 }
+
 bool Wheel::removeWedge(int wedge) {
-    if (find(wheel.begin(), wheel.end(), wedge) == wheel.end()) {
+    if (find(wheel.begin(), wheel.end(), wedge) != wheel.end()) {
         for (int i = 0; i < wheel.size(); ++i) {
             if (wheel[i] == wedge) {
                 wheel.erase(wheel.begin() + i);
@@ -64,8 +58,9 @@ void Wheel::fillWheel() {
     // Highest value prize, lose a turn, and bankrupt are less probable
     wheel.push_back(1000);
     wheel.push_back(2500);
-    wheel.push_back(0); // Bankruptwheel.push_back(-1); // Lose a turn
-    size += 3;
+    wheel.push_back(0); // Bankrupt
+    wheel.push_back(-1); // Lose a turn
+    size += 4;
 }
 int Wheel::spin() {
     srand(time(nullptr));

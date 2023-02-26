@@ -28,6 +28,10 @@ bool testWheelOfFortune() {
     bool passed = true;
     WheelOfFortune test;
 
+    // Solve puzzle
+    // Guessed phrase
+    // Switch players
+    //
     // Test setters
     test.setPhrase("Hello");
     if (test.getPhrase() != "Hello") {
@@ -161,7 +165,7 @@ bool testWheel() {
 
     // Add wedge
     wheel2.addWedge(700);
-    if (find(wheel2.getWheel().begin(), wheel2.getWheel().end(), 700) != wheel2.getWheel().end()) {
+    if (find(wheel2.getWheel().begin(), wheel2.getWheel().end(), 700) == wheel2.getWheel().end()) {
         cout << "FAILED addWedge test case 1" << endl;
         passed = false;
     }
@@ -190,7 +194,7 @@ bool testWheel() {
     }
 
     wheel2.removeWedge(400);
-    if (wheel2.getSize() != 2) {
+    if (wheel2.getSize() != 3) {
         cout << "FAILED remove wedge test case 2" << endl;
         passed = false;
     }
@@ -198,7 +202,7 @@ bool testWheel() {
     Wheel wheel3;
     wheel3.fillWheel();
 
-    if (wheel3.getSize() != 25) {
+    if (wheel3.getSize() != 26) {
         cout << "FAILED fillWheel test case 1" << endl;
         passed = false;
     }

@@ -10,6 +10,7 @@ WheelOfFortune::WheelOfFortune() {
     lettersGuessed = {};
     categories = {};
     phrases = {};
+    vowelsGuessed = 0;
 
     // Fill players vector
     currentPlayer = 0;
@@ -61,16 +62,19 @@ void WheelOfFortune::setPlayers(Player player1, Player player2) {
     players.push_back(player1);
     players.push_back(player2);
 }
+void WheelOfFortune::setCurrentPlayer(int index) {
+    this->currentPlayer = index;
+}
 
 void WheelOfFortune::printGameOptions(ostream& outs) {
-    if (players[currentPlayer].sufficientFunds()) {
+    if (!(players[currentPlayer].sufficientFunds()) || vowelsGuessed == 5) {
         outs << endl << "<><><>Options<><><>" << endl;
-        outs << "C - Guess a consonant" << endl << "V - Buy a vowel for $250" << endl << "P - Solve the puzzle!" << endl << "E - Exit game" << endl;
+        outs << "C - Guess a consonant" << endl << "P - Solve the puzzle!" << endl << "E - Exit game" << endl;
         outs << "<><><><><><><><><><>" << endl << endl;
     }
     else {
         outs << endl << "<><><>Options<><><>" << endl;
-        outs << "C - Guess a consonant" << endl << "P - Solve the puzzle!" << endl << "E - Exit game" << endl;
+        outs << "C - Guess a consonant" << endl << "V - Buy a vowel for $250" << endl << "P - Solve the puzzle!" << endl << "E - Exit game" << endl;
         outs << "<><><><><><><><><><>" << endl << endl;
     }
 
@@ -86,15 +90,25 @@ char WheelOfFortune::getOption(ostream& outs, istream& ins) {
     outs << "Choose an option: ";
     getline(ins, option);
 
-    if (players[currentPlayer].sufficientFunds()) {
+    if (!(players[currentPlayer].sufficientFunds()) || vowelsGuessed == 5) {
         while (!valid) {
             if (option == "") {
                 valid = false;
                 outs << "No input. Please choose an option: ";
                 ins.clear();
                 getline(ins, option);
-            }
-            else if (option.length() != 1 || toupper(option[0]) != 'C' && toupper(option[0]) != 'V' && toupper(option[0]) != 'P' && toupper(option[0]) != 'E') {
+            } else if (toupper(option[0]) == 'V') {
+                valid = false;
+                outs << "There are no vowels left to guess! Please choose another option: ";
+                ins.clear(0);
+                getline(ins, option);
+            } else if (toupper(option[0]) == 'V') {
+                valid = false;
+                outs << "You do not have enough money to buy a vowel. Please choose another option: ";
+                ins.clear(0);
+                getline(ins, option);
+            } else if (option.length() != 1 ||
+                       toupper(option[0]) != 'C' && toupper(option[0]) != 'P' && toupper(option[0]) != 'E') {
                 valid = false;
                 outs << "Did you even look at the options? Here they are again: " << endl;
                 printGameOptions(outs);
@@ -102,8 +116,7 @@ char WheelOfFortune::getOption(ostream& outs, istream& ins) {
                 ins.clear();
                 outs << "Choose an option: ";
                 getline(ins, option);
-            }
-            else {
+            } else {
                 valid = true;
             }
         }
@@ -116,13 +129,7 @@ char WheelOfFortune::getOption(ostream& outs, istream& ins) {
                 ins.clear();
                 getline(ins, option);
             }
-            else if (toupper(option[0]) == 'V') {
-                valid = false;
-                outs << "You do not have enough money to buy a vowel. Please choose another option: ";
-                ins.clear(0);
-                getline(ins, option);
-            }
-            else if (option.length() != 1 || toupper(option[0]) != 'C' && toupper(option[0]) != 'P' && toupper(option[0]) != 'E') {
+            else if (option.length() != 1 || toupper(option[0]) != 'C' && toupper(option[0]) != 'V' && toupper(option[0]) != 'P' && toupper(option[0]) != 'E') {
                 valid = false;
                 outs << "Did you even look at the options? Here they are again: " << endl;
                 printGameOptions(outs);
@@ -330,6 +337,7 @@ int WheelOfFortune::guessVowel(ostream& outs, istream& ins) {
 
     // Update current player balance (- 250)
     players[currentPlayer].buyVowel();
+    ++vowelsGuessed;
 
     return guessed;
 
@@ -410,6 +418,9 @@ bool WheelOfFortune::solvePuzzle(string guess) {
     }
 
     if (flag == phrase.size()) {
+        for (char ch : phrase){
+            lettersGuessed.push_back(ch);
+        }
         players[currentPlayer].winner();
         return true;
     }
@@ -471,14 +482,6 @@ void WheelOfFortune::switchPlayers() {
         currentPlayer = 0;
     }
 }
-/*
-void WheelOfFortune::setCurrentPlayer(Player player) {
-    for (int i = 0; i < players.size(); ++i) {
-        if (player == players[i]) {
-            currentPlayer = i;
-        }
-    }
-}*/
 
 Player WheelOfFortune::getCurrentPlayer() {
     return players[currentPlayer];
@@ -493,9 +496,9 @@ void WheelOfFortune::printCurrentPlayerBalance(ostream& outs) {
 }
 void WheelOfFortune::printFinalStats(ostream& outs) {
     outs << players[0] << "'s Wins: " << players[0].getNumWins() << endl;
-    outs << players[0] << "'s Final Balance: $" << players[0].getBalance() << endl;
-
     outs << players[1] << "'s Wins: " << players[1].getNumWins() << endl;
+    outs << endl;
+    outs << players[0] << "'s Final Balance: $" << players[0].getBalance() << endl;
     outs << players[1] << "'s Final Balance: $" << players[1].getBalance() << endl;
 }
 bool WheelOfFortune::setPlayerNames(string player1, string player2) {
@@ -524,16 +527,12 @@ bool WheelOfFortune::setPlayerNames(string player1, string player2) {
         if (flag == player1.length()) {
             return false;
         }
-        else {
-            return true;
-        }
     }
 
-    else {
-        players[0].setName(player1);
-        players[1].setName(player2);
-        return true;
-    }
+    players[0].setName(player1);
+    players[1].setName(player2);
+    return true;
+
 }
 
 void WheelOfFortune::printCurrentPlayer(ostream& outs) {
