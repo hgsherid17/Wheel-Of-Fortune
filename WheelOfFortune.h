@@ -21,7 +21,7 @@
 using namespace std;
 /**
  * The Wheel of Fortune class represents functions of the wheel of fortune game.
- * It is also now a two-player game!
+ * It holds three objects from the Player and Wheel classes
  * It has the following fields:
  * phrase: the current puzzle to be guessed by the user
  * category: the topic of the given puzzle
@@ -29,7 +29,10 @@ using namespace std;
  * phrases: a vector to hold all possible phrases
  * categories: a vector to hold all possible categories
  * lastGuessed: holds the last letter to be guessed by the user
- * wheel: a constant vector that holds the prizes offered
+ * wheel: an object of the "Wheel" class to represent the wheel and its prizes
+ * players: a vector holding two "Player" objects
+ * currentPlayer: the index of the player who is currently guessing letters
+ * vowelsGuessed: the number of vowels guessed by both players
  * vowels: a constant vector to hold vowels
  */
 class WheelOfFortune {
@@ -63,6 +66,10 @@ public:
     void setCurrentPlayer(int index);
     void setCurrentPlayerBalance(int bal);
 
+    /**
+     * adds given letter to the lettersGuessed vector field
+     * @param letter
+     */
     void addGuessed(char letter);
 
     /**
@@ -117,8 +124,9 @@ public:
 
     /**
      * guessConsonant() prompts a user to guess a consonant and validates their response.
-     * If validated, the consonant will be searched for in the phrase. The function will
-     * return the amount of that specific consonant found in the phrase.
+     * If validated, the consonant will be searched for in the phrase. The current
+     * player's balance is updated according to the amount of consonants guessed.
+     * The function will return the amount of that specific consonant found in the phrase.
      * @param outs
      * @param ins
      * @return guessed // The number of consonants correctly guessed
@@ -127,7 +135,8 @@ public:
 
     /**
      * guessVowel() prompts a user to guess a vowel and validates their response.
-     * If validated, the vowel will be searched for in the phrase. The function will
+     * If validated, the vowel will be searched for in the phrase. The current player's
+     * balance will be decremented by $250. The function will
      * return the amount of that specific vowel found in the phrase.
      * @param outs
      * @param ins
@@ -144,6 +153,11 @@ public:
      */
     void printPhrase(ostream& outs);
 
+    /**
+     * Prints each letter in the alphabet except for those correctly guessed
+     * by the players.
+     * @param outs
+     */
     void printLettersGuessed(ostream& outs);
 
     /**
@@ -155,6 +169,12 @@ public:
      */
     bool solvePuzzle(string guess);
 
+    /**
+     * This function returns true if the user has guessed every letter in the phrase.
+     * If every letter in the phrase is not in the lettersGuessed vector, the
+     * function returns false
+     * @return boolean value
+     */
     bool guessedPhrase();
 
     /**
@@ -171,12 +191,41 @@ public:
      */
     void switchPlayers();
 
+    /**
+     * This function prints a formatted string displaying the balance of the current player
+     * @param outs
+     */
     void printCurrentPlayerBalance(ostream& outs);
+
+    /**
+     * This function prints each player's balance and number of wins
+     * @param outs
+     */
     void printFinalStats(ostream& outs);
 
+    /**
+     * setPlayerNames() takes in two strings representing the name of each player.
+     * If the names are the same, the function does not update the player names and
+     * returns false. If they are different, the function updates each player's name
+     * and returns true.
+     * @param player1
+     * @param player2
+     * @return boolean value
+     */
     bool setPlayerNames(string player1, string player2);
+
+    /**
+     * This function prints the name of the current player
+     * @param outs
+     */
     void printCurrentPlayer(ostream& outs);
 
+    /**
+     * This function calls the wheel object's spin() method to get
+     * a random prize value. The function will update the current player object's
+     * prize field according to the value returned.
+     * @return prize value
+     */
     int spinWheel();
 
     //friend ostream& operator << (ostream& outs, Player& player);

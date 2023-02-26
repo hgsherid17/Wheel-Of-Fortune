@@ -9,6 +9,14 @@
 #include <string>
 using namespace std;
 
+/**
+ * Player class represents someone who is playing the Wheel Of Fortune game.
+ * It has the following fields:
+ * balance: the amount of money amassed by the player
+ * numWins: the amount of puzzles the player has correctly guessed
+ * prize: the current prize to be added to the player's balance
+ * name: the username or title of the player
+ */
 class Player {
 private:
     int balance;
@@ -32,28 +40,31 @@ public:
     void setPrize(int wedge);
     void setName(string playerName);
 
-    /*
-     * Takes in number of correctly guessed consonants and updates balance accordingly
+    /**
+     * guessConsonant takes in number of correctly guessed consonants
+     * and updates balance accordingly
+     * @param numGuessed
      */
     void guessConsonant(int numGuessed);
 
     /**
-     * Removes $250 from players balance
+     * buyVowels decrements the player's balance by $250
      */
     void buyVowel();
 
     /**
-     * Sets players balance to zero
+     * bankrupt sets the player's balance to zero
      */
     void bankrupt();
 
     /**
-     * increments numWins
+     * winner increments the numWins variable by one
      */
     void winner();
 
-    /*
-     * Returns true if user has sufficient funds to buy a vowel
+    /**
+     * sufficientFunds returns true if user has enough money to buy a vowel (>= $250)
+     * @return boolean value
      */
     bool sufficientFunds();
 

@@ -9,7 +9,12 @@
 #include <vector>
 
 using namespace std;
-
+/**
+ * Wheel class represents a Wheel Of Fortune prize wheel.
+ * wedge: the current prize that the wheel has landed on
+ * size: the number of wedges on the wheel
+ * wheel: a vector holding the wheel's prizes
+ */
 class Wheel {
 private:
     int wedge;
@@ -47,12 +52,12 @@ public:
     void fillWheel();
 
     /**
-     * Returns a random value from the wheel
+     * spin returns a random value from the wheel
      * @return
      */
     int spin();
 
-    // Overloaded operator
+    // Overloaded print operator
     friend ostream& operator << (ostream& outs, Wheel& rhs);
 };
 #endif //M1OEP_HGSHERID_WHEEL_H
