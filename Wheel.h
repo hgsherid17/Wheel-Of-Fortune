@@ -9,6 +9,7 @@
 #include <vector>
 
 using namespace std;
+
 /**
  * Wheel class represents a Wheel Of Fortune prize wheel.
  * wedge: the current prize that the wheel has landed on

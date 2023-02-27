@@ -8,11 +8,13 @@ using namespace std;
 Wheel::Wheel() {
     fillWheel();
     wedge = 200;
+    srand(time(nullptr));
 }
 Wheel::Wheel(vector<int> wheel) {
     this->wheel = wheel;
     size = wheel.size();
     wedge = wheel[0];
+    srand(time(nullptr));
 }
 
 vector<int> Wheel::getWheel() {
@@ -63,7 +65,6 @@ void Wheel::fillWheel() {
     size += 4;
 }
 int Wheel::spin() {
-    srand(time(nullptr));
     int randIndex = rand() % wheel.size();
 
     wedge = wheel[randIndex];

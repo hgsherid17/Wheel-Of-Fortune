@@ -12,26 +12,7 @@ using namespace std;
 
 /*
  * Main uses the WheelOfFortune class to build a user interface for the Wheel of Fortune game.
- * It stores the user's balance and current prize.
  * */
-
-/**
- *
- *
- * TODO: Do not allow user to guess vowel if all possible vowels have been guessed
- *
- * TODO: Put input validation from guessVowel and guessConsonant and pass in user's guess instead of passing istream
- * TODO: Make lettersGuessed a main variable and not class field
- *
- *
- * Put prize in main or Player?
- * If so put bankrupt in Player?
- *
- * LOSE A TURN IN MAIN OR WHEELOFFORTUNE CLASS??
- *
- *
- *
- */
  int main() {
      // Variables
     // int balance = 0;
@@ -40,7 +21,6 @@ using namespace std;
      int consonants, vowels, prize;
      char option = 'C';
      string letter;
-
 
      // Create object and get puzzle from file
      WheelOfFortune player;
@@ -60,7 +40,7 @@ using namespace std;
      getline(cin, player2);
      bool diff = player.setPlayerNames(player1, player2);
      while (!diff) {
-         cout << "You cannot have the same name as another player!" << endl << "Please enter another name: ";
+         cout << "You cannot have the same name as another player!" << endl << "Please enter a different name: ";
          getline(cin, player2);
          diff = player.setPlayerNames(player1, player2);
      }
@@ -80,16 +60,19 @@ using namespace std;
      while(playing){
          player.printCurrentPlayer(cout);
 
-         // If user decides to spin the wheel, spin wheel and print prize
          cout << endl << "Spinning the wheel..." << endl;
-
          prize = player.spinWheel();
-         while (prize == -1) {
-             cout << "Sorry, " << player.getCurrentPlayer() << ", you lost a turn!" << endl;
-             player.switchPlayers();
+         while (prize == -1 || prize == 0) {
+             if (prize == -1) {
+                 cout << "Sorry, " << player.getCurrentPlayer() << ", you lost a turn!" << endl;
+                 player.switchPlayers();
+             }
+             else {
+                 cout << "Sorry, " << player.getCurrentPlayer() << ", you've gone bankrupt!" << endl;
+                 player.switchPlayers();
+             }
              player.printCurrentPlayer(cout);
              cout << endl << "Spinning the wheel..." << endl;
-             prize = 0;
              prize = player.spinWheel();
          }
 

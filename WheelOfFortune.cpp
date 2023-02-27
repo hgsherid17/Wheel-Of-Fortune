@@ -47,6 +47,7 @@ Player WheelOfFortune::getCurrentPlayer() {
 }
 
 void WheelOfFortune::setPhrase (string p) {
+    vowelsGuessed = 0;
     lettersGuessed.clear();
     this->phrase = p;
 }
@@ -103,7 +104,7 @@ char WheelOfFortune::getOption(ostream& outs, istream& ins) {
                 outs << "No input. Please choose an option: ";
                 ins.clear();
                 getline(ins, option);
-            } else if (toupper(option[0]) == 'V') {
+            } else if (toupper(option[0]) == 'V' && vowelsGuessed == 5) {
                 valid = false;
                 outs << "There are no vowels left to guess! Please choose another option: ";
                 ins.clear(0);
@@ -241,6 +242,8 @@ bool WheelOfFortune::readFile(string filename) {
 
 void WheelOfFortune::setRandom() {
     int index = rand() % phrases.size();
+    vowelsGuessed = 0;
+    lettersGuessed.clear();
     phrase = phrases[index];
     category = categories[index];
 }
@@ -272,7 +275,7 @@ int WheelOfFortune::guessConsonant(ostream& outs, istream& ins) {
         else if (find(lettersGuessed.begin(), lettersGuessed.end(), toupper(letter[0])) != lettersGuessed.end()) {
             valid = false;
 
-            outs << "You have already guessed that letter!";
+            outs << "That letter has already been guessed!";
             outs << " Try again: ";
             ins.clear();
             getline(ins, letter);
@@ -323,7 +326,7 @@ int WheelOfFortune::guessVowel(ostream& outs, istream& ins) {
         }
         else if (find(lettersGuessed.begin(), lettersGuessed.end(), toupper(letter[0])) != lettersGuessed.end()) {
             valid = false;
-            cout << "You have already guessed that letter! Try again: ";
+            cout << "That letter has already been guessed! Try again: ";
             ins.clear();
             getline(ins, letter);
         }
@@ -354,7 +357,7 @@ void WheelOfFortune::printPhrase(ostream& outs) {
     /*
     outs << "<><><><><><><><><><><><><><><><><><><><><><><><><><><><><>" << endl;
     outs << "<>                                                      <>" << endl;*/
-    //outs << "            ";
+    outs << "            ";
     //outs << setw(53) << left;
     bool guessed = false;
     for (int i = 0; i < phrase.size(); ++i) {
@@ -380,7 +383,7 @@ void WheelOfFortune::printPhrase(ostream& outs) {
     }
 
     outs << endl;
-    outs  << "<><><> " << category << " <><><>" << endl;
+    outs  << "            " << "<><><> " << category << " <><><>" << endl;
     printLettersGuessed(outs);
     /*
     outs << endl << "<>                                                      <>" << endl;
@@ -534,12 +537,8 @@ int WheelOfFortune::spinWheel() {
     if (wedge == 0) {
         players[currentPlayer].bankrupt();
     }
-    else if (wedge == -1) {
-        switchPlayers();
-    }
-    else {
-        players[currentPlayer].setPrize(wedge);
-    }
+
+    players[currentPlayer].setPrize(wedge);
 
     return wedge;
 
