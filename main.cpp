@@ -14,20 +14,18 @@ using namespace std;
  * Main uses the WheelOfFortune class to build a user interface for the Wheel of Fortune game.
  * */
  int main() {
-     // Variables
-    // int balance = 0;
      bool solved = false;
      bool playing, round;
      int consonants, vowels, prize;
      char option = 'C';
      string letter;
+     string player1;
+     string player2;
 
-     // Create object and get puzzle from file
+     // Create WOF object and get puzzle from file
      WheelOfFortune player;
      player.readFile("../WOFPhrases.csv");
      player.setRandom();
-     string player1;
-     string player2;
 
      // Welcome message
      cout << "Welcome to Wheel of Fortune!" << endl;
@@ -35,12 +33,13 @@ using namespace std;
      // Get and set player names
      cout << "Please enter the name of Player 1: ";
      getline(cin, player1);
-
      cout << "Please enter the name of Player 2: ";
      getline(cin, player2);
+
+     // Players cannot have the same name
      bool diff = player.setPlayerNames(player1, player2);
      while (!diff) {
-         cout << "You cannot have the same name as another player!" << endl << "Please enter a different name: ";
+         cout << "You may not use the same name as another player!" << endl << "Please enter a different name: ";
          getline(cin, player2);
          diff = player.setPlayerNames(player1, player2);
      }
@@ -51,14 +50,17 @@ using namespace std;
 
      cout << player.getPhrase() << endl;
 
-     // Prompt user to spin wheel
+     // Prompt user to spin wheel or exit
      playing = player.activePlayer(cout, cin);
 
      while(playing){
          player.printCurrentPlayer(cout);
 
+         // Spin wheel
          cout << endl << "Spinning the wheel..." << endl;
          prize = player.spinWheel();
+
+         // Switch players if player lands on bankrupt or lose a turn
          while (prize == -1 || prize == 0) {
              if (prize == -1) {
                  cout << "Sorry, " << player.getCurrentPlayer() << ", you lost a turn!" << endl;

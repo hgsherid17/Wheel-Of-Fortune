@@ -18,7 +18,7 @@ WheelOfFortune::WheelOfFortune() {
     Player player2("Player 2");
     setPlayers(player1, player2);
 
-    srand(time(NULL));
+    srand(time(nullptr));
 
 }
 
@@ -28,6 +28,13 @@ string WheelOfFortune::getPhrase() {
 
 string WheelOfFortune::getCategory() {
     return this->category;
+}
+
+vector<string> WheelOfFortune::getCategories() {
+    return this->categories;
+}
+vector<string> WheelOfFortune::getPhrases() {
+    return this->phrases;
 }
 
 char WheelOfFortune::getLastGuessed() {
@@ -203,6 +210,8 @@ bool WheelOfFortune::activePlayer(ostream& outs, istream& ins) {
 }
 
 bool WheelOfFortune::readFile(string filename) {
+    phrases.clear();
+    categories.clear();
     ifstream inFile;
     inFile.open(filename);
 
@@ -235,7 +244,6 @@ bool WheelOfFortune::readFile(string filename) {
         phrases.push_back(phrase);
     }
     inFile.close();
-
 
     return true;
 }
@@ -539,7 +547,6 @@ int WheelOfFortune::spinWheel() {
     }
 
     players[currentPlayer].setPrize(wedge);
-
     return wedge;
 
 }

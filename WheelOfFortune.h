@@ -54,6 +54,8 @@ public:
     // Getters
     string getPhrase();
     string getCategory();
+    vector<string> getCategories();
+    vector<string> getPhrases();
     char getLastGuessed();
     vector<char> getLettersGuessed();
     vector<Player> getPlayers();
@@ -227,8 +229,6 @@ public:
      * @return prize value
      */
     int spinWheel();
-
-    //friend ostream& operator << (ostream& outs, Player& player);
 
 
 

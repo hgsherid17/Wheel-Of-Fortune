@@ -50,6 +50,7 @@ bool Wheel::removeWedge(int wedge) {
     }
 }
 void Wheel::fillWheel() {
+    wheel.clear();
     size = 0;
     for (int i = 200; i <= 700; i += 50) {
         wheel.push_back(i);
@@ -63,6 +64,8 @@ void Wheel::fillWheel() {
     wheel.push_back(0); // Bankrupt
     wheel.push_back(-1); // Lose a turn
     size += 4;
+
+    wedge = wheel[0];
 }
 int Wheel::spin() {
     int randIndex = rand() % wheel.size();

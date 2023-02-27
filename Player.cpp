@@ -40,8 +40,8 @@ void Player::setNumWins(int wins) {
 void Player::setPrize(int wedge) {
     prize = wedge;
 }
-void Player::setName(string playerName) {
-    name = playerName;
+void Player::setName(string playerName)  {
+    this->name = playerName;
 }
 
 void Player::guessConsonant(int numGuessed) {
@@ -49,8 +49,14 @@ void Player::guessConsonant(int numGuessed) {
     balance += prizeMoney;
 }
 
-void Player::buyVowel() {
-    balance -= 250;
+bool Player::buyVowel() {
+    if (sufficientFunds()) {
+        balance -= 250;
+        return true;
+    }
+    else {
+        return false;
+    }
 }
 
 void Player::bankrupt() {
@@ -60,7 +66,6 @@ void Player::bankrupt() {
 void Player::winner() {
     ++numWins;
 }
-
 
 bool Player::sufficientFunds() {
     if (balance >= 250) {
@@ -72,18 +77,41 @@ bool Player::sufficientFunds() {
 }
 
 bool operator == (const Player &lhs, const Player &rhs) {
+    bool flag = false;
     if (lhs.getName() == rhs.getName()) {
         return true;
+    }
+    else if (lhs.getName().length() == rhs.getName().length()) {
+        for (int i = 0; i < lhs.getName().length(); ++i) {
+            if (tolower(lhs.getName()[i]) != tolower(rhs.getName()[i])) {
+                flag = true;
+            }
+        }
+        if (!flag) {
+            return true;
+        }
     }
     return false;
 }
 
 bool operator == (const Player &lhs, const string &rhs) {
+    bool flag = false;
     if (lhs.getName() == rhs) {
         return true;
     }
+    else if (lhs.getName().length() == rhs.length()) {
+        for (int i = 0; i < rhs.length(); ++i) {
+            if (tolower(lhs.getName()[i]) != tolower(rhs[i])) {
+                flag = true;
+            }
+        }
+        if (!flag) {
+            return true;
+        }
+    }
     return false;
 }
+
 ostream& operator << (ostream& outs, Player rhs) {
     char lastChar;
     for (int i = 0; i < rhs.getName().length(); ++i) {

@@ -50,7 +50,7 @@ public:
     /**
      * buyVowels decrements the player's balance by $250
      */
-    void buyVowel();
+    bool buyVowel();
 
     /**
      * bankrupt sets the player's balance to zero
