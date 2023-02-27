@@ -49,10 +49,7 @@ using namespace std;
      player.printCurrentPlayer(cout);
      player.printPhrase(cout);
 
-     /**
-      * TODO: get rid
-      */
-      cout << player.getPhrase() << endl;
+     cout << player.getPhrase() << endl;
 
      // Prompt user to spin wheel
      playing = player.activePlayer(cout, cin);
