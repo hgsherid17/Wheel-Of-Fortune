@@ -6,8 +6,11 @@ This program is a Wheel of Fortune game with two players. It has a WheelOfFortun
 * Category does not print centered under the puzzle
 
 ### Future Expansions:
+* Add "Free Play" wedge
+* Add "Wild Card" wedge
+* Add bonus rounds like "Toss Up" and "RSTLNE"
 * Add a set of game rules for the user
-* Improve visual aspects of the game
+* Improve visual aspects of the game (GUI, etc.)
 * Add a component class to represent the puzzle board
 
 ### Citations:
