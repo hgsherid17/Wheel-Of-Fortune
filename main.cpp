@@ -46,9 +46,6 @@ using namespace std;
 
      // Print game puzzle and start Player 1's turn
      player.printCurrentPlayer(cout);
-     player.printPhrase(cout);
-
-     cout << player.getPhrase() << endl;
 
      // Prompt user to spin wheel or exit
      playing = player.activePlayer(cout, cin);
